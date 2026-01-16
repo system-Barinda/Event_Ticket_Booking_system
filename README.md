@@ -24,6 +24,11 @@ backend/
 │       ├── read.php
 │       ├── update.php
 │       └── delete.php
+│   └── ticket_types/
+│       ├── create.php
+│       ├── read.php
+│       ├── update.php
+│       └── delete.php
 │── uploads/
 │── tickets/
 │── reports/
