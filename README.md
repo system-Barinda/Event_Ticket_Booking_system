@@ -20,7 +20,10 @@ backend/
 │   │    ├── update.php
 │   │    └── delete.php
 │   └── sessions/
-│
+│       ├── create.php
+│       ├── read.php
+│       ├── update.php
+│       └── delete.php
 │── uploads/
 │── tickets/
 │── reports/
