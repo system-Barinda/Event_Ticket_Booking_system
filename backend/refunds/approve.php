@@ -1,5 +1,6 @@
 <?php
 require "../../config/database.php";
+require "../../modules/notifications/send.php";
 
 $refundId = $_POST['refund_id'];
 
@@ -9,7 +10,7 @@ try {
 
     /* Get refund */
     $refund = $conn->query("
-        SELECT r.*, o.session_id
+        SELECT r.*, o.session_id, o.user_id
         FROM refunds r
         JOIN orders o ON r.order_id=o.order_id
         WHERE refund_id=$refundId
@@ -55,7 +56,16 @@ try {
         WHERE refund_id=$refundId
     ");
 
+    /* ✅ COMMIT FIRST */
     $conn->commit();
+
+    /* ✅ SEND REFUND NOTIFICATION */
+    sendNotification(
+        $refund['user_id'],
+        "Your refund has been approved and processed.",
+        "refund"
+    );
+
     echo json_encode(["success" => "Refund approved"]);
 
 } catch (Exception $e) {
