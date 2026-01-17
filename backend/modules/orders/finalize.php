@@ -1,6 +1,7 @@
 <?php
 require "../../config/database.php";
 require "../../libs/phpqrcode/qrlib.php";
+require "../../modules/notifications/send.php"; // ✅ ADD THIS
 
 $orderId = $_POST['order_id'];
 
@@ -98,7 +99,16 @@ try {
         AND session_id={$order['session_id']}
     ");
 
+    /* ✅ COMMIT FIRST */
     $conn->commit();
+
+    /* ✅ SEND NOTIFICATION AFTER SUCCESS */
+    sendNotification(
+        $order['user_id'],
+        "Your tickets have been issued successfully. Please bring your QR code.",
+        "booking"
+    );
+
     echo json_encode(["success" => "Tickets generated"]);
 
 } catch (Exception $e) {
