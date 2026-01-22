@@ -158,22 +158,147 @@ Stores booking and ticket data.
 
 ---
 
-## 7. API Workflow (Backend Logic)
+## 7. API Documentation
 
-The backend operates as a REST-style API and follows this workflow:
+The backend exposes a set of REST-style API endpoints that allow the frontend or external clients to interact with the system. All responses are returned in **JSON format**.
 
-1. The client sends an HTTP request (GET, POST, PUT, DELETE)
-2. The request is routed to the appropriate PHP module
-3. Input data is validated and sanitized
-4. Database operations are executed using prepared statements
-5. A structured JSON response is returned to the client
+### 7.1 API Design Principles
 
-### Example Endpoints
+* RESTful endpoint structure
+* Use of HTTP methods (GET, POST, PUT, DELETE)
+* JSON request and response format
+* Separation of concerns using modules
 
-* `GET /modules/events/read.php`
-* `POST /modules/users/create.php`
-* `PUT /modules/events/update.php`
-* `DELETE /modules/events/delete.php`
+---
+
+### 7.2 User Module API
+
+**Base Path:** `/modules/users/`
+
+#### Create User
+
+* **Endpoint:** `POST create.php`
+* **Request Body (JSON):**
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "secret123",
+  "role": "user"
+}
+```
+
+* **Response:**
+
+```json
+{
+  "status": "success",
+  "message": "User created successfully"
+}
+```
+
+#### Read Users
+
+* **Endpoint:** `GET read.php`
+* **Response:**
+
+```json
+[
+  {
+    "user_id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "user"
+  }
+]
+```
+
+---
+
+### 7.3 Event Module API
+
+**Base Path:** `/modules/events/`
+
+#### Create Event
+
+* **Endpoint:** `POST create.php`
+* **Request Body (JSON):**
+
+```json
+{
+  "title": "Music Concert",
+  "description": "Live performance",
+  "date": "2026-06-10",
+  "venue_id": 2
+}
+```
+
+````
+- **Response:**
+```json
+{
+  "status": "success",
+  "message": "Event created successfully"
+}
+````
+
+#### Read Events
+
+* **Endpoint:** `GET read.php`
+* **Response:**
+
+```json
+[
+  {
+    "event_id": 1,
+    "title": "Music Concert",
+    "date": "2026-06-10",
+    "venue": "City Hall"
+  }
+]
+```
+
+---
+
+### 7.4 Ticket Module API
+
+**Base Path:** `/modules/tickets/`
+
+#### Book Ticket
+
+* **Endpoint:** `POST create.php`
+* **Request Body (JSON):**
+
+```json
+{
+  "user_id": 1,
+  "session_id": 3,
+  "seat_number": "A12"
+}
+```
+
+* **Response:**
+
+```json
+{
+  "status": "success",
+  "ticket_id": 15
+}
+```
+
+---
+
+### 7.5 Error Handling
+
+All API errors follow a consistent structure:
+
+```json
+{
+  "status": "error",
+  "message": "Invalid request"
+}
+```
 
 ---
 
