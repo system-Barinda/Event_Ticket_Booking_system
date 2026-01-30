@@ -24,37 +24,18 @@
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- ===== NAVBAR (Same as homepage) ===== -->
+  <!-- ===== SIMPLE TOP BAR ===== -->
   <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
-      <h1 class="text-xl sm:text-2xl font-bold text-primary">EventBook</h1>
-
-      <nav class="hidden md:flex space-x-8 font-medium items-center">
-        <a href="index.html" class="hover:text-primary transition">Home</a>
-        <a href="#" class="hover:text-primary transition">Events</a>
-        <a href="#" class="hover:text-primary transition">My Tickets</a>
-      </nav>
-
-      <div class="hidden md:flex items-center space-x-4">
-        <a href="login.html" class="text-primary font-medium hover:underline flex items-center h-10">Login</a>
-        <a href="register.html" class="bg-primary text-white px-5 h-10 flex items-center rounded-lg hover:bg-blue-700 transition">Register</a>
-      </div>
-
-      <button id="menuBtn" class="md:hidden text-primary text-2xl">☰</button>
-    </div>
-
-    <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 space-y-3 font-medium">
-      <a href="index.html" class="block hover:text-primary">Home</a>
-      <a href="#" class="block hover:text-primary">Events</a>
-      <a href="#" class="block hover:text-primary">My Tickets</a>
-      <hr>
-      <a href="login.html" class="block text-primary">Login</a>
-      <a href="register.html" class="block bg-primary text-white text-center py-2 rounded-lg">Register</a>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="text-primary font-semibold hover:underline">
+        ← Back to Events
+      </a>
+      <h1 class="text-lg sm:text-xl font-bold text-primary">EventBook</h1>
     </div>
   </header>
 
   <!-- ===== EVENT DETAILS ===== -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
     <div class="grid lg:grid-cols-2 gap-10">
 
       <!-- Event Image -->
@@ -80,9 +61,9 @@
 
           <!-- Event Details -->
           <div class="space-y-3 text-gray-700 text-sm sm:text-base mb-6">
-            <p> <span id="eventVenue">Kigali Arena</span></p>
-            <p> <span id="eventDate">25 March 2026</span></p>
-            <p> <span id="eventPrice">$25</span></p>
+            <p>📍 <span id="eventVenue">Kigali Arena</span></p>
+            <p>📅 <span id="eventDate">25 March 2026</span></p>
+            <p>💰 <span id="eventPrice">$25</span></p>
           </div>
         </div>
 
@@ -101,44 +82,15 @@
 
   <!-- ===== FOOTER ===== -->
   <footer class="bg-secondary text-gray-300 mt-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid gap-8 sm:grid-cols-2 md:grid-cols-3 text-center sm:text-left">
-      <div>
-        <h5 class="text-lg font-bold text-white mb-3">EventBook</h5>
-        <p class="text-sm">Secure and simple event ticket booking platform.</p>
-      </div>
-
-      <div>
-        <h5 class="text-lg font-bold text-white mb-3">Quick Links</h5>
-        <ul class="space-y-2 text-sm">
-          <li><a href="#" class="hover:underline">Events</a></li>
-          <li><a href="#" class="hover:underline">My Tickets</a></li>
-          <li><a href="#" class="hover:underline">Support</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h5 class="text-lg font-bold text-white mb-3">Contact</h5>
-        <p class="text-sm">📧 support@eventbook.com</p>
-        <p class="text-sm">📞 +250 7xx xxx xxx</p>
-      </div>
-    </div>
-
-    <div class="text-center text-sm border-t border-gray-700 py-4">
-      © 2026 EventBook. All rights reserved.
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 text-center">
+      <p class="text-sm">© 2026 EventBook. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- ===== SCRIPTS ===== -->
+  <!-- ===== SCRIPT ===== -->
   <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
-    menuBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
-
-    // Example: Read event ID from URL
     const params = new URLSearchParams(window.location.search);
     const eventId = params.get("id");
-
-    // Later you'll fetch event details from backend using eventId
     console.log("Event ID:", eventId);
   </script>
 
