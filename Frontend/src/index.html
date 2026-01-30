@@ -4,59 +4,140 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Event Ticket Booking</title>
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-     <link rel="stylesheet" href="./styles/output.css">
+   <link rel="stylesheet" href="./styles/output.css">
+
+  <!-- Tailwind Custom Colors -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563eb",   // blue-600
+            secondary: "#1e293b", // slate-800
+          }
+        }
+      }
+    }
+  </script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- 🔵 NAVBAR -->
-  <nav class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white shadow-lg">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold tracking-wide">🎟 Eventify</h1>
-      <div class="space-x-6 hidden md:flex">
-        <a href="#" class="hover:text-gray-200">Home</a>
-        <a href="#" class="hover:text-gray-200">Events</a>
-        <a href="#" class="hover:text-gray-200">My Tickets</a>
-        <a href="login.html" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">Login</a>
+  <!-- ================= NAVBAR ================= -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-primary">🎟 EventBook</h1>
+
+      <nav class="hidden md:flex space-x-6 font-medium">
+        <a href="#" class="hover:text-primary">Home</a>
+        <a href="#" class="hover:text-primary">Events</a>
+        <a href="#" class="hover:text-primary">My Tickets</a>
+      </nav>
+
+      <div class="space-x-3">
+        <a href="login.html" class="text-primary font-medium hover:underline">Login</a>
+        <a href="register.html"
+           class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          Register
+        </a>
       </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- 🟣 HERO SECTION -->
-  <section class="bg-gradient-to-r from-indigo-700 to-purple-700 text-white py-20">
-    <div class="container mx-auto px-6 text-center">
-      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-        Discover Amazing Events Near You
+  <!-- ================= HERO SECTION ================= -->
+  <section class="bg-gradient-to-r from-primary to-indigo-600 text-white">
+    <div class="max-w-7xl mx-auto px-6 py-20 text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
+        Book Tickets for Amazing Events
       </h2>
-      <p class="text-lg md:text-xl mb-8 text-indigo-100">
-        Book tickets for concerts, conferences, festivals and more — all in one place.
+      <p class="max-w-2xl mx-auto text-lg text-blue-100 mb-8">
+        Discover concerts, conferences, sports, and exclusive events.
+        Book your seat instantly and securely.
       </p>
-      <a href="#events" class="bg-white text-indigo-700 px-8 py-3 rounded-full font-semibold shadow-lg hover:scale-105 transition transform">
-        Explore Events
+      <a href="#events"
+         class="inline-block bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
+        Browse Events
       </a>
     </div>
   </section>
 
-  <!-- 🟡 EVENTS SECTION -->
-  <section id="events" class="py-16">
-    <div class="container mx-auto px-6">
-      <h3 class="text-3xl font-bold text-center mb-12">Upcoming Events</h3>
+  <!-- ================= EVENTS SECTION ================= -->
+  <section id="events" class="max-w-7xl mx-auto px-6 py-16">
+    <div class="flex justify-between items-center mb-10">
+      <h3 class="text-3xl font-bold">Upcoming Events</h3>
+      <a href="#" class="text-primary font-medium hover:underline">
+        View all →
+      </a>
+    </div>
 
-      <div id="eventsContainer" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Event cards will be loaded here dynamically -->
+    <!-- Events Grid -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+      <!-- Event Card -->
+      <div class="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden">
+        <img src="assets/images/default-event.jpg"
+             alt="Event"
+             class="h-48 w-full object-cover">
+
+        <div class="p-6">
+          <h4 class="text-xl font-bold mb-2">Music Festival 2026</h4>
+          <p class="text-gray-600 text-sm mb-4">
+            Enjoy live performances from top artists in an unforgettable experience.
+          </p>
+
+          <div class="text-sm text-gray-500 space-y-1">
+            <p>📍 Kigali Arena</p>
+            <p>📅 25 March 2026</p>
+          </div>
+
+          <a href="event.html?id=1"
+             class="block mt-6 text-center bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">
+            View Details
+          </a>
+        </div>
       </div>
+
+      <!-- Duplicate cards dynamically later -->
+      <!-- You will replace static cards with JS -->
+
     </div>
   </section>
 
-  <!-- 🟢 FOOTER -->
-  <footer class="bg-gray-900 text-gray-400 py-10 mt-16">
-    <div class="container mx-auto px-6 text-center">
-      <p class="mb-2">© 2026 Eventify. All rights reserved.</p>
-      <p class="text-sm">Built with passion for seamless event booking.</p>
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-secondary text-gray-300">
+    <div class="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
+      
+      <div>
+        <h5 class="text-lg font-bold text-white mb-3">EventBook</h5>
+        <p class="text-sm">
+          A modern event ticket booking platform.
+          Secure, fast, and easy to use.
+        </p>
+      </div>
+
+      <div>
+        <h5 class="text-lg font-bold text-white mb-3">Quick Links</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:underline">Events</a></li>
+          <li><a href="#" class="hover:underline">My Tickets</a></li>
+          <li><a href="#" class="hover:underline">Support</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-lg font-bold text-white mb-3">Contact</h5>
+        <p class="text-sm">📧 support@eventbook.com</p>
+        <p class="text-sm">📞 +250 7xx xxx xxx</p>
+      </div>
+    </div>
+
+    <div class="text-center text-sm border-t border-gray-700 py-4">
+      © 2026 EventBook. All rights reserved.
     </div>
   </footer>
 
-  <script src="js/events.js"></script>
 </body>
 </html>
