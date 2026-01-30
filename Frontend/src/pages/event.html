@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Details | EventBook</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./styles/output.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563eb",
+            secondary: "#1e293b",
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- ===== SIMPLE TOP BAR ===== -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="text-primary font-semibold hover:underline">
+        ← Back to Events
+      </a>
+      <h1 class="text-lg sm:text-xl font-bold text-primary">EventBook</h1>
+    </div>
+  </header>
+
+  <!-- ===== EVENT DETAILS ===== -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div class="grid lg:grid-cols-2 gap-10">
+
+      <!-- Event Image -->
+      <div>
+        <img id="eventImage"
+             src="assets/images/default-event.jpg"
+             alt="Event Image"
+             class="w-full h-64 sm:h-96 object-cover rounded-2xl shadow-md">
+      </div>
+
+      <!-- Event Info -->
+      <div class="flex flex-col justify-between">
+
+        <div>
+          <h2 id="eventTitle" class="text-3xl sm:text-4xl font-extrabold mb-4">
+            Music Festival 2026
+          </h2>
+
+          <p id="eventDescription" class="text-gray-600 mb-6 leading-relaxed">
+            Join thousands of music lovers for a day full of live performances,
+            food, and unforgettable memories. Experience top artists and an amazing atmosphere.
+          </p>
+
+          <!-- Event Details -->
+          <div class="space-y-3 text-gray-700 text-sm sm:text-base mb-6">
+            <p>📍 <span id="eventVenue">Kigali Arena</span></p>
+            <p>📅 <span id="eventDate">25 March 2026</span></p>
+            <p>💰 <span id="eventPrice">$25</span></p>
+          </div>
+        </div>
+
+        <!-- Booking Button -->
+        <div class="mt-6">
+          <a id="bookBtn"
+             href="booking.html?eventId=1"
+             class="block text-center bg-primary text-white text-lg font-semibold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg">
+            Book Ticket
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-secondary text-gray-300 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 text-center">
+      <p class="text-sm">© 2026 EventBook. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const eventId = params.get("id");
+    console.log("Event ID:", eventId);
+  </script>
+
+</body>
+</html>
