@@ -1,30 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./styles/output.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Ticket Booking</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="./styles/output.css">
 </head>
-<body class="bg-gray-100">
 
-  <!-- Navbar -->
-  <nav class="bg-blue-600 text-white p-4 flex justify-between">
-    <h1 class="text-xl font-bold">🎟 Event Booking</h1>
-    <div>
-      <a href="login.html" class="mr-4 hover:underline">Login</a>
-      <a href="register.html" class="hover:underline">Register</a>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- 🔵 NAVBAR -->
+  <nav class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white shadow-lg">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold tracking-wide">🎟 Eventify</h1>
+      <div class="space-x-6 hidden md:flex">
+        <a href="#" class="hover:text-gray-200">Home</a>
+        <a href="#" class="hover:text-gray-200">Events</a>
+        <a href="#" class="hover:text-gray-200">My Tickets</a>
+        <a href="login.html" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">Login</a>
+      </div>
     </div>
   </nav>
 
-  <!-- Events Section -->
-  <section class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Available Events</h2>
-    
-    <div id="eventsContainer" class="grid md:grid-cols-3 gap-6">
-      <!-- Events will load here from backend -->
+  <!-- 🟣 HERO SECTION -->
+  <section class="bg-gradient-to-r from-indigo-700 to-purple-700 text-white py-20">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+        Discover Amazing Events Near You
+      </h2>
+      <p class="text-lg md:text-xl mb-8 text-indigo-100">
+        Book tickets for concerts, conferences, festivals and more — all in one place.
+      </p>
+      <a href="#events" class="bg-white text-indigo-700 px-8 py-3 rounded-full font-semibold shadow-lg hover:scale-105 transition transform">
+        Explore Events
+      </a>
     </div>
   </section>
+
+  <!-- 🟡 EVENTS SECTION -->
+  <section id="events" class="py-16">
+    <div class="container mx-auto px-6">
+      <h3 class="text-3xl font-bold text-center mb-12">Upcoming Events</h3>
+
+      <div id="eventsContainer" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Event cards will be loaded here dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 🟢 FOOTER -->
+  <footer class="bg-gray-900 text-gray-400 py-10 mt-16">
+    <div class="container mx-auto px-6 text-center">
+      <p class="mb-2">© 2026 Eventify. All rights reserved.</p>
+      <p class="text-sm">Built with passion for seamless event booking.</p>
+    </div>
+  </footer>
 
   <script src="js/events.js"></script>
 </body>
