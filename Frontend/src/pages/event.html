@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Details | EventBook</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./styles/output.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563eb",
+            secondary: "#1e293b",
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- ===== NAVBAR (Same as homepage) ===== -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+      <h1 class="text-xl sm:text-2xl font-bold text-primary">EventBook</h1>
+
+      <nav class="hidden md:flex space-x-8 font-medium items-center">
+        <a href="index.html" class="hover:text-primary transition">Home</a>
+        <a href="#" class="hover:text-primary transition">Events</a>
+        <a href="#" class="hover:text-primary transition">My Tickets</a>
+      </nav>
+
+      <div class="hidden md:flex items-center space-x-4">
+        <a href="login.html" class="text-primary font-medium hover:underline flex items-center h-10">Login</a>
+        <a href="register.html" class="bg-primary text-white px-5 h-10 flex items-center rounded-lg hover:bg-blue-700 transition">Register</a>
+      </div>
+
+      <button id="menuBtn" class="md:hidden text-primary text-2xl">☰</button>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 space-y-3 font-medium">
+      <a href="index.html" class="block hover:text-primary">Home</a>
+      <a href="#" class="block hover:text-primary">Events</a>
+      <a href="#" class="block hover:text-primary">My Tickets</a>
+      <hr>
+      <a href="login.html" class="block text-primary">Login</a>
+      <a href="register.html" class="block bg-primary text-white text-center py-2 rounded-lg">Register</a>
+    </div>
+  </header>
+
+  <!-- ===== EVENT DETAILS ===== -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div class="grid lg:grid-cols-2 gap-10">
+
+      <!-- Event Image -->
+      <div>
+        <img id="eventImage"
+             src="assets/images/default-event.jpg"
+             alt="Event Image"
+             class="w-full h-64 sm:h-96 object-cover rounded-2xl shadow-md">
+      </div>
+
+      <!-- Event Info -->
+      <div class="flex flex-col justify-between">
+
+        <div>
+          <h2 id="eventTitle" class="text-3xl sm:text-4xl font-extrabold mb-4">
+            Music Festival 2026
+          </h2>
+
+          <p id="eventDescription" class="text-gray-600 mb-6 leading-relaxed">
+            Join thousands of music lovers for a day full of live performances,
+            food, and unforgettable memories. Experience top artists and an amazing atmosphere.
+          </p>
+
+          <!-- Event Details -->
+          <div class="space-y-3 text-gray-700 text-sm sm:text-base mb-6">
+            <p> <span id="eventVenue">Kigali Arena</span></p>
+            <p> <span id="eventDate">25 March 2026</span></p>
+            <p> <span id="eventPrice">$25</span></p>
+          </div>
+        </div>
+
+        <!-- Booking Button -->
+        <div class="mt-6">
+          <a id="bookBtn"
+             href="booking.html?eventId=1"
+             class="block text-center bg-primary text-white text-lg font-semibold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg">
+            Book Ticket
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-secondary text-gray-300 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid gap-8 sm:grid-cols-2 md:grid-cols-3 text-center sm:text-left">
+      <div>
+        <h5 class="text-lg font-bold text-white mb-3">EventBook</h5>
+        <p class="text-sm">Secure and simple event ticket booking platform.</p>
+      </div>
+
+      <div>
+        <h5 class="text-lg font-bold text-white mb-3">Quick Links</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:underline">Events</a></li>
+          <li><a href="#" class="hover:underline">My Tickets</a></li>
+          <li><a href="#" class="hover:underline">Support</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-lg font-bold text-white mb-3">Contact</h5>
+        <p class="text-sm">📧 support@eventbook.com</p>
+        <p class="text-sm">📞 +250 7xx xxx xxx</p>
+      </div>
+    </div>
+
+    <div class="text-center text-sm border-t border-gray-700 py-4">
+      © 2026 EventBook. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    menuBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
+
+    // Example: Read event ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const eventId = params.get("id");
+
+    // Later you'll fetch event details from backend using eventId
+    console.log("Event ID:", eventId);
+  </script>
+
+</body>
+</html>
