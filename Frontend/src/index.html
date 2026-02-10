@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
+  <!-- ===================== META ===================== -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Event Ticket Booking</title>
 
+  <!-- ===================== STYLES ===================== -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./styles/output.css">
+  <link rel="stylesheet" href="./styles/output.css" />
 
+  <!-- ===================== TAILWIND CONFIG ===================== -->
   <script>
     tailwind.config = {
       theme: {
@@ -15,43 +19,52 @@
           colors: {
             primary: "#2563eb",
             secondary: "#1e293b",
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    };
   </script>
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
 
+  <!-- ===================== MAIN SCRIPT ===================== -->
   <script src="./js/index.js"></script>
-  <!-- this the header menu -->
 
+  <!-- ===================== HEADER ===================== -->
   <div id="header-placeholder"></div>
 
+  <!-- ===================== HERO SECTION ===================== -->
   <section class="bg-indigo-600 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
+
       <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
         Book Tickets for Amazing Events
       </h2>
+
       <p class="max-w-2xl mx-auto text-base sm:text-lg text-blue-100 mb-10">
         Discover concerts, conferences, sports, and exclusive events.
         Book your seat instantly and securely.
       </p>
-      <a href="#events"
-         class="inline-block bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transform hover:scale-105 transition duration-300 shadow-lg">
+
+      <a
+        href="#events"
+        class="inline-block bg-white text-primary px-8 py-3 rounded-xl font-semibold
+               hover:bg-gray-100 transform hover:scale-105 transition duration-300 shadow-lg"
+      >
         Browse Events
       </a>
+
     </div>
   </section>
 
- <!-- the upcoming-events are placed here -->
+  <!-- ===================== UPCOMING EVENTS ===================== -->
   <div id="upcoming-events-placeholder"></div>
-  
- <!-- the past events placed here complited -->
+
+  <!-- ===================== PAST EVENTS ===================== -->
   <div id="past-events-placeholder"></div>
 
-  <!-- this the footer placed here -->
+  <!-- ===================== FOOTER ===================== -->
   <div id="footer-placeholder"></div>
 
 </body>
