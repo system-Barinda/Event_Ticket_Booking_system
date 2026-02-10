@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <link rel="stylesheet" href="../styles/output.css">
+   <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563eb",
+            secondary: "#1e293b",
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+   <!-- ================= NAVBAR ================= -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+    
+    <!-- Logo -->
+    <h1 class="text-xl sm:text-2xl font-bold text-primary whitespace-nowrap">
+      EventBook
+    </h1>
+
+    <!-- Desktop Menu -->
+    <nav class="hidden md:flex space-x-8 font-medium items-center">
+      <a href="index.jsp" class="hover:text-primary transition">Home</a>
+      <a href="events.jsp" class="hover:text-primary transition">Events</a>
+      <a href="tickets.jsp" class="hover:text-primary transition">My Tickets</a>
+    </nav>
+
+    <!-- Right Buttons -->
+    <div class="hidden md:flex items-center space-x-4">
+      <a href="login.jsp"
+         class="text-primary font-medium hover:underline flex items-center h-10">
+        Login
+      </a>
+
+      <a href="register.jsp"
+         class="bg-primary text-white px-5 h-10 flex items-center rounded-lg hover:bg-blue-700 transition">
+        Register
+      </a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button id="menuBtn" class="md:hidden text-primary text-2xl">
+      ☰
+    </button>
+  </div>
+
+  <!-- Mobile Dropdown -->
+  <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 space-y-3 font-medium">
+    <a href="index.jsp" class="block hover:text-primary">Home</a>
+    <a href="events.jsp" class="block hover:text-primary">Events</a>
+    <a href="tickets.jsp" class="block hover:text-primary">My Tickets</a>
+    <hr>
+    <a href="login.jsp" class="block text-primary">Login</a>
+    <a href="register.jsp"
+       class="block bg-primary text-white text-center py-2 rounded-lg">
+      Register
+    </a>
+  </div>
+</header>
+
+<!-- Mobile Menu Script -->
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  }
+</script>
+
+</body>
+</html>
