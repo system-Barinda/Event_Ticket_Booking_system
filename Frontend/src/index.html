@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,172 +22,132 @@
   </script>
 </head>
 
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800 antialiased">
 
-  <!-- ================= NAVBAR ================= -->
- <script>
-    fetch('./components/header.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-      });
-  </script>
-<div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
 
-  <!-- ================= HERO SECTION ================= -->
   <section class="bg-gradient-to-r from-primary to-indigo-600 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
       <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
         Book Tickets for Amazing Events
       </h2>
-      <p class="max-w-2xl mx-auto text-base sm:text-lg text-blue-100 mb-8">
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-blue-100 mb-10">
         Discover concerts, conferences, sports, and exclusive events.
         Book your seat instantly and securely.
       </p>
       <a href="#events"
-         class="inline-block bg-white text-primary px-6 sm:px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
+         class="inline-block bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transform hover:scale-105 transition duration-300 shadow-lg">
         Browse Events
       </a>
     </div>
   </section>
 
-  <!-- ================= EVENTS SECTION ================= -->
   <section id="events" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-10">
-      <h3 class="text-2xl sm:text-3xl font-bold">Upcoming Events</h3>
-      <a href="#" class="text-primary font-medium hover:underline">
-        View all →
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-10 border-b border-gray-100 pb-5">
+      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Upcoming Events</h3>
+      <a href="#" class="text-primary font-medium hover:text-blue-700 transition">
+        View all &rarr;
       </a>
     </div>
 
-    <!-- Responsive Grid -->
-    <div class="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
-      <!-- Event Card -->
-      <div class="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden">
-        <img src="./assets/upEvent.jpg"
-             alt="Event"
-             class="h-44 sm:h-48 w-full object-cover">
-
-        <div class="p-5 sm:p-6">
-          <h4 class="text-lg sm:text-xl font-bold mb-2">Music Festival 2026</h4>
-          <p class="text-gray-600 text-sm mb-4">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition duration-300 overflow-hidden border border-gray-100 group">
+        <div class="overflow-hidden">
+          <img src="./assets/upEvent.jpg" alt="Event" class="h-48 w-full object-cover group-hover:scale-110 transition duration-500">
+        </div>
+        <div class="p-6">
+          <h4 class="text-lg sm:text-xl font-bold mb-2 group-hover:text-primary transition">Music Festival 2026</h4>
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">
             Enjoy live performances from top artists in an unforgettable experience.
           </p>
-
-          <div class="text-sm text-gray-500 space-y-1">
-            <p>📍 Kigali Arena</p>
-            <p>📅 25 March 2026</p>
+          <div class="text-sm text-gray-500 space-y-2 mb-6">
+            <p class="flex items-center">📍 <span class="ml-2">Kigali Arena</span></p>
+            <p class="flex items-center">📅 <span class="ml-2">25 March 2026</span></p>
           </div>
-
           <a href="event.html?id=1"
-             class="block mt-6 text-center bg-primary text-white py-2 rounded-lg hover:bg-blue-700 transition">
+             class="block w-full text-center bg-primary text-white py-2.5 rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg transition">
             View Details
           </a>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- ================= PAST EVENTS SECTION ================= -->
-<section id="past-events" class="bg-gray-100 border-t">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-    
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-10">
-      <h3 class="text-2xl sm:text-3xl font-bold text-gray-800">
-        Past Events
-      </h3>
-      <a href="#" class="text-primary font-medium hover:underline">
-        View archive →
-      </a>
-    </div>
-
-    <!-- Responsive Grid -->
-    <div class="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
-      <!-- Past Event Card -->
-      <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden opacity-90">
-        <div class="relative">
-          <img src="./assets/eventDovid.jpg"
-               alt="Past Event"
-               class="h-44 sm:h-48 w-full object-cover grayscale">
-
-          <!-- Badge -->
-          <span class="absolute top-3 left-3 bg-gray-800 text-white text-xs px-3 py-1 rounded-full">
-            Event Ended
-          </span>
-        </div>
-
-        <div class="p-5 sm:p-6">
-          <h4 class="text-lg sm:text-xl font-bold mb-2 text-gray-700">
-            Tech Conference 2025
-          </h4>
-
-          <p class="text-gray-500 text-sm mb-4">
-            A gathering of developers and tech leaders sharing innovations and ideas.
-          </p>
-
-          <div class="text-sm text-gray-500 space-y-1 mb-4">
-            <p>📍 Kigali Convention Center</p>
-            <p>📅 12 October 2025</p>
-          </div>
-
-          <button
-            class="w-full bg-gray-300 text-gray-600 py-2 rounded-lg cursor-not-allowed">
-            Event Completed
-          </button>
-        </div>
+  <section id="past-events" class="bg-gray-100 border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-10">
+        <h3 class="text-2xl sm:text-3xl font-bold text-gray-800">Past Events</h3>
+        <a href="#" class="text-primary font-medium hover:underline">View archive &rarr;</a>
       </div>
 
-      <!-- Duplicate more past events dynamically later -->
-
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden opacity-90 grayscale hover:grayscale-0 transition duration-500 border border-gray-200">
+          <div class="relative">
+            <img src="./assets/eventDovid.jpg" alt="Past Event" class="h-48 w-full object-cover">
+            <span class="absolute top-3 left-3 bg-gray-800/80 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full">
+              Event Ended
+            </span>
+          </div>
+          <div class="p-6">
+            <h4 class="text-lg sm:text-xl font-bold mb-2 text-gray-700">Tech Conference 2025</h4>
+            <p class="text-gray-500 text-sm mb-4">A gathering of developers and tech leaders sharing innovations.</p>
+            <div class="text-sm text-gray-400 space-y-1 mb-4">
+              <p>📍 Kigali Convention Center</p>
+              <p>📅 12 October 2025</p>
+            </div>
+            <button disabled class="w-full bg-gray-200 text-gray-500 py-2 rounded-lg cursor-not-allowed font-medium">
+              Event Completed
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-  <!-- ================= FOOTER ================= -->
   <footer class="bg-secondary text-gray-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid gap-8 sm:grid-cols-2 md:grid-cols-3 text-center sm:text-left">
-      
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid gap-10 sm:grid-cols-2 md:grid-cols-3 text-center sm:text-left">
       <div>
-        <h5 class="text-lg font-bold text-white mb-3">EventBook</h5>
-        <p class="text-sm">
-          A modern event ticket booking platform.
-          Secure, fast, and easy to use.
+        <h5 class="text-xl font-bold text-white mb-4">EventBook</h5>
+        <p class="text-sm leading-relaxed">
+          A modern event ticket booking platform. Secure, fast, and easy to use for all your event needs.
         </p>
       </div>
-
       <div>
-        <h5 class="text-lg font-bold text-white mb-3">Quick Links</h5>
+        <h5 class="text-lg font-semibold text-white mb-4">Quick Links</h5>
         <ul class="space-y-2 text-sm">
-          <li><a href="#" class="hover:underline">Events</a></li>
-          <li><a href="#" class="hover:underline">My Tickets</a></li>
-          <li><a href="#" class="hover:underline">Support</a></li>
+          <li><a href="#" class="hover:text-white transition">Upcoming Events</a></li>
+          <li><a href="#" class="hover:text-white transition">My Tickets</a></li>
+          <li><a href="#" class="hover:text-white transition">Support Center</a></li>
         </ul>
       </div>
-
       <div>
-        <h5 class="text-lg font-bold text-white mb-3">Contact</h5>
-        <p class="text-sm">📧 support@eventbook.com</p>
+        <h5 class="text-lg font-semibold text-white mb-4">Contact</h5>
+        <p class="text-sm mb-2">📧 support@eventbook.com</p>
         <p class="text-sm">📞 +250 7xx xxx xxx</p>
       </div>
     </div>
-
-    <div class="text-center text-sm border-t border-gray-700 py-4">
-      © 2026 EventBook. All rights reserved.
+    <div class="text-center text-xs border-t border-gray-800 py-6 tracking-wide">
+      &copy; 2026 EventBook. All rights reserved.
     </div>
   </footer>
 
-  <!-- Mobile Menu Script -->
   <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
-
-    menuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-    });
+    // 1. Fetch Header Component
+    fetch('./components/header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        
+        // 2. Initialize Mobile Menu Logic AFTER header is loaded
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+        if(menuBtn && mobileMenu) {
+          menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+          });
+        }
+      })
+      .catch(err => console.error("Error loading header:", err));
   </script>
 
 </body>
