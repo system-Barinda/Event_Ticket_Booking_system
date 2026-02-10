@@ -8,6 +8,35 @@
   <link rel="stylesheet" href="../styles/output.css">
 </head>
 <body>
-    
+    <section id="past-events" class="bg-gray-100 border-t border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-10">
+      <h3 class="text-2xl sm:text-3xl font-bold text-gray-800">Past Events</h3>
+      <a href="#" class="text-primary font-medium hover:underline">View archive &rarr;</a>
+    </div>
+
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="bg-white rounded-2xl shadow-sm overflow-hidden opacity-90 grayscale hover:grayscale-0 transition duration-500 border border-gray-200">
+        <div class="relative">
+          <img src="./assets/eventDovid.jpg" alt="Past Event" class="h-48 w-full object-cover">
+          <span class="absolute top-3 left-3 bg-gray-800/80 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full">
+            Event Ended
+          </span>
+        </div>
+        <div class="p-6">
+          <h4 class="text-lg sm:text-xl font-bold mb-2 text-gray-700">Tech Conference 2025</h4>
+          <p class="text-gray-500 text-sm mb-4">A gathering of developers and tech leaders sharing innovations.</p>
+          <div class="text-sm text-gray-400 space-y-1 mb-4">
+            <p>📍 Kigali Convention Center</p>
+            <p>📅 12 October 2025</p>
+          </div>
+          <button disabled class="w-full bg-gray-200 text-gray-500 py-2 rounded-lg cursor-not-allowed font-medium">
+            Event Completed
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </body>
 </html>
