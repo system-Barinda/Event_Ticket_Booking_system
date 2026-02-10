@@ -9,17 +9,17 @@
     return;
   }
 
-  fetch("/components/footer.html")
-    .then((response) => {
+  fetch("../components/footer.html")
+    .then(response => {
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error("Footer not found");
       }
       return response.text();
     })
-    .then((html) => {
-      footerContainer.innerHTML = html;
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
     })
-    .catch((error) => {
-      console.error("Error loading footer:", error);
+    .catch(error => {
+      console.error("Footer load error:", error);
     });
 })();

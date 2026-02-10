@@ -26,3 +26,6 @@ fetch(API_URL)
   .catch(() => {
     eventsContainer.innerHTML = "<p class='text-red-500 text-center'>Unable to load events.</p>";
   });
+
+
+  
