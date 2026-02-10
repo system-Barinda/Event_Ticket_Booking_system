@@ -23,7 +23,8 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
-
+  <!-- this the header menu -->
+   
   <div id="header-placeholder"></div>
 
   <section class="bg-indigo-600 text-white">
@@ -103,26 +104,6 @@
       &copy; 2026 EventBook. All rights reserved.
     </div>
   </footer>
-
-  <!-- <script>
-    // 1. Fetch Header Component
-    fetch('./components/header.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-        
-        // 2. Initialize Mobile Menu Logic AFTER header is loaded
-        const menuBtn = document.getElementById("menuBtn");
-        const mobileMenu = document.getElementById("mobileMenu");
-        if(menuBtn && mobileMenu) {
-          menuBtn.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-          });
-        }
-      })
-      .catch(err => console.error("Error loading header:", err));
-  </script> -->
-
 
   <script>
     // Function to load HTML components
