@@ -1,27 +1,59 @@
+/**
+ * Load an HTML component into a placeholder element
+ * @param {string} id - The placeholder element ID
+ * @param {string} path - Path to the component file
+ * @param {Function} callback - Optional callback after load
+ */
+function loadComponent(id, path, callback) {
+  fetch(path)
+    .then((response) => response.text())
+    .then((html) => {
+      const container = document.getElementById(id);
 
-    function loadComponent(id, path, callback) {
-      fetch(path)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById(id).innerHTML = data;
-          if (callback) callback();
-        })
-        .catch(err => console.error("Error loading " + path, err));
-    }
+      if (!container) {
+        console.error(`Element with id "${id}" not found`);
+        return;
+      }
 
-    // 1. Load Header
-    loadComponent('header-placeholder', './components/header.html', () => {
-      const menuBtn = document.getElementById("menuBtn");
-      const mobileMenu = document.getElementById("mobileMenu");
-      if(menuBtn) menuBtn.onclick = () => mobileMenu.classList.toggle("hidden");
+      container.innerHTML = html;
+
+      if (typeof callback === "function") {
+        callback();
+      }
+    })
+    .catch((error) => {
+      console.error(`Error loading component: ${path}`, error);
     });
+}
 
-    // 2. Load Upcoming Events
-    loadComponent('upcoming-events-placeholder', './components/upcoming-events.html');
+/* ================= COMPONENT LOADERS ================= */
 
-    // 3. Load Past Events
-    loadComponent('past-events-placeholder', './components/past-events.html');
+// 1️ Header
+loadComponent("header-placeholder", "./components/header.html", () => {
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
 
-    // 4. Load Footer
-    loadComponent('footer-placeholder', './components/footer.html');
-  
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  }
+});
+
+// 2️ Upcoming Events
+loadComponent(
+  "upcoming-events-placeholder",
+  "./components/upcoming-events.html"
+);
+
+// 3️ Past Events
+loadComponent(
+  "past-events-placeholder",
+  "./components/past-events.html"
+);
+
+// 4️ Footer
+loadComponent(
+  "footer-placeholder",
+  "./components/footer.html"
+);
