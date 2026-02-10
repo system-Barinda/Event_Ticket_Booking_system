@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../styles/output.css">
+
+</head>
+<body>
+    <!-- ================= HEADER / NAVBAR ================= -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="../index.html" class="text-xl sm:text-2xl font-bold text-primary">
+      EventBook
+    </a>
+
+    <!-- Desktop Menu -->
+    <nav class="hidden md:flex space-x-8 font-medium items-center">
+      <a href="../index.html"
+         class="hover:text-primary transition">
+        Home
+      </a>
+
+      <a href="../index.html#events"
+         class="hover:text-primary transition">
+        Events
+      </a>
+
+      <a href="../tickets.html"
+         class="hover:text-primary transition">
+        My Tickets
+      </a>
+    </nav>
+
+    <!-- Right Actions -->
+    <div class="hidden md:flex items-center space-x-4">
+      <a href="../login.html"
+         class="text-primary font-medium hover:underline">
+        Login
+      </a>
+
+      <a href="../register.html"
+         class="bg-primary text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">
+        Register
+      </a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button id="menuBtn"
+            class="md:hidden text-primary text-2xl focus:outline-none">
+      ☰
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu"
+       class="hidden md:hidden px-6 pb-4 space-y-3 font-medium bg-white border-t">
+    <a href="../index.html" class="block hover:text-primary">Home</a>
+    <a href="../index.html#events" class="block hover:text-primary">Events</a>
+    <a href="../tickets.html" class="block hover:text-primary">My Tickets</a>
+
+    <hr>
+
+    <a href="../login.html" class="block text-primary">Login</a>
+    <a href="../register.html"
+       class="block bg-primary text-white text-center py-2 rounded-lg">
+      Register
+    </a>
+  </div>
+</header>
+
+</body>
+</html>
