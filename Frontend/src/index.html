@@ -25,52 +25,14 @@
 <body class="bg-gray-50 text-gray-800">
 
   <!-- ================= NAVBAR ================= -->
-  <!-- ================= NAVBAR ================= -->
-<header class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
-    
-    <!-- Logo -->
-    <h1 class="text-xl sm:text-2xl font-bold text-primary whitespace-nowrap">
-      EventBook
-    </h1>
-
-    <!-- Desktop Menu -->
-    <nav class="hidden md:flex space-x-8 font-medium items-center">
-      <a href="#" class="hover:text-primary transition">Home</a>
-      <a href="#" class="hover:text-primary transition">Events</a>
-      <a href="#" class="hover:text-primary transition">My Tickets</a>
-    </nav>
-
-    <!-- Right Buttons -->
-    <div class="hidden md:flex items-center space-x-4">
-      <a href="login.html"
-         class="text-primary font-medium hover:underline flex items-center h-10">
-        Login
-      </a>
-
-      <a href="register.html"
-         class="bg-blue-500 text-white px-5 h-10 flex items-center rounded-lg hover:bg-blue-700 transition">
-        Register
-      </a>
-    </div>
-
-    <!-- Mobile Menu Button -->
-    <button id="menuBtn" class="md:hidden text-primary text-2xl">
-      ☰
-    </button>
-  </div>
-
-  <!-- Mobile Dropdown -->
-  <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 space-y-3 font-medium">
-    <a href="#" class="block hover:text-primary">Home</a>
-    <a href="#" class="block hover:text-primary">Events</a>
-    <a href="#" class="block hover:text-primary">My Tickets</a>
-    <hr>
-    <a href="login.html" class="block text-primary">Login</a>
-    <a href="register.html" class="block bg-primary text-white text-center py-2 rounded-lg">Register</a>
-  </div>
-</header>
-
+ <script>
+    fetch('./components/header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
+  </script>
+<div id="header-placeholder"></div>
 
   <!-- ================= HERO SECTION ================= -->
   <section class="bg-gradient-to-r from-primary to-indigo-600 text-white">
