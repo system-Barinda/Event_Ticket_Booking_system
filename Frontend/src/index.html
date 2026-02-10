@@ -42,36 +42,9 @@
     </div>
   </section>
 
-  <section id="events" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 bg-slate-200">
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-10 border-b border-gray-100 pb-5">
-      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Upcoming Events</h3>
-      <a href="#" class="text-primary font-medium hover:text-blue-700 transition">
-        View all &rarr;
-      </a>
-    </div>
-
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition duration-300 overflow-hidden border border-gray-100 group">
-        <div class="overflow-hidden">
-          <img src="./assets/upEvent.jpg" alt="Event" class="h-48 w-full object-cover group-hover:scale-110 transition duration-500">
-        </div>
-        <div class="p-6">
-          <h4 class="text-lg sm:text-xl font-bold mb-2 group-hover:text-primary transition">Music Festival 2026</h4>
-          <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-            Enjoy live performances from top artists in an unforgettable experience.
-          </p>
-          <div class="text-sm text-gray-500 space-y-2 mb-6">
-            <p class="flex items-center">📍 <span class="ml-2">Kigali Arena</span></p>
-            <p class="flex items-center">📅 <span class="ml-2">25 March 2026</span></p>
-          </div>
-          <a href="event.html?id=1"
-             class="block w-full text-center bg-primary text-white py-2.5 rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg transition">
-            View Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+ <!-- the upcoming-events are placed here -->
+  <div id="upcoming-events-placeholder"></div>
+  
 
   <section id="past-events" class="bg-gray-100 border-t border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
@@ -131,7 +104,7 @@
     </div>
   </footer>
 
-  <script>
+  <!-- <script>
     // 1. Fetch Header Component
     fetch('./components/header.html')
       .then(response => response.text())
@@ -148,6 +121,30 @@
         }
       })
       .catch(err => console.error("Error loading header:", err));
+  </script> -->
+
+
+  <script>
+    // Function to load HTML components
+    function loadComponent(id, path, callback) {
+      fetch(path)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById(id).innerHTML = data;
+          if (callback) callback();
+        })
+        .catch(err => console.error("Error loading " + path, err));
+    }
+
+    // Load Header
+    loadComponent('header-placeholder', './components/header.html', () => {
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      if(menuBtn) menuBtn.onclick = () => mobileMenu.classList.toggle("hidden");
+    });
+
+    // Load Upcoming Events
+    loadComponent('upcoming-events-placeholder', './components/upcoming-events.html');
   </script>
 
 </body>
