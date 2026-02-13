@@ -58,12 +58,24 @@
             required
           />
 
+          <!-- REAL ICON -->
           <button
             type="button"
             id="togglePassword"
             class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-primary"
           >
-            👁
+            <!-- Eye -->
+            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5
+                   c4.478 0 8.268 2.943 9.542 7
+                   -1.274 4.057-5.064 7-9.542 7
+                   -4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
           </button>
         </div>
 
@@ -108,6 +120,9 @@
   <!-- JAVASCRIPT -->
   <script>
     const password = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    const eyeIcon = document.getElementById("eyeIcon");
+
     const progressBar = document.getElementById("progressBar");
     const percentageText = document.getElementById("percentageText");
     const loginBtn = document.getElementById("loginBtn");
@@ -121,10 +136,29 @@
       symbol: document.getElementById("rule-symbol"),
     };
 
+    // 👁 Show / Hide Password
+    togglePassword.addEventListener("click", () => {
+      const isHidden = password.type === "password";
+      password.type = isHidden ? "text" : "password";
+
+      eyeIcon.innerHTML = isHidden
+        ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             d="M3 3l18 18
+                M13.875 18.825A10.05 10.05 0 0112 19
+                c-4.478 0-8.268-2.943-9.542-7
+                a9.956 9.956 0 012.041-3.368" />`
+        : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             d="M2.458 12C3.732 7.943 7.523 5 12 5
+                c4.478 0 8.268 2.943 9.542 7
+                -1.274 4.057-5.064 7-9.542 7
+                -4.477 0-8.268-2.943-9.542-7z" />`;
+    });
+
     password.addEventListener("input", () => {
       const value = password.value;
 
-      // 🔹 Show feedback ONLY when typing starts
       if (value.length > 0) {
         feedback.classList.remove("hidden");
       } else {
@@ -136,35 +170,20 @@
 
       let score = 0;
 
-      // Length
-      if (value.length >= 8) {
-        rules.length.className = "text-green-600";
-        score++;
-      } else rules.length.className = "text-red-500";
+      if (value.length >= 8) { rules.length.className = "text-green-600"; score++; }
+      else rules.length.className = "text-red-500";
 
-      // Lowercase
-      if (/[a-z]/.test(value)) {
-        rules.lower.className = "text-green-600";
-        score++;
-      } else rules.lower.className = "text-red-500";
+      if (/[a-z]/.test(value)) { rules.lower.className = "text-green-600"; score++; }
+      else rules.lower.className = "text-red-500";
 
-      // Uppercase
-      if (/[A-Z]/.test(value)) {
-        rules.upper.className = "text-green-600";
-        score++;
-      } else rules.upper.className = "text-red-500";
+      if (/[A-Z]/.test(value)) { rules.upper.className = "text-green-600"; score++; }
+      else rules.upper.className = "text-red-500";
 
-      // Number
-      if (/[0-9]/.test(value)) {
-        rules.number.className = "text-green-600";
-        score++;
-      } else rules.number.className = "text-red-500";
+      if (/[0-9]/.test(value)) { rules.number.className = "text-green-600"; score++; }
+      else rules.number.className = "text-red-500";
 
-      // Symbol
-      if (/[^A-Za-z0-9]/.test(value)) {
-        rules.symbol.className = "text-green-600";
-        score++;
-      } else rules.symbol.className = "text-red-500";
+      if (/[^A-Za-z0-9]/.test(value)) { rules.symbol.className = "text-green-600"; score++; }
+      else rules.symbol.className = "text-red-500";
 
       const percentage = (score / 5) * 100;
       progressBar.style.width = percentage + "%";
@@ -174,15 +193,11 @@
         "h-2 rounded transition-all " +
         (percentage === 100 ? "bg-green-500" : "bg-yellow-500");
 
-      if (percentage === 100) {
-        loginBtn.disabled = false;
-        loginBtn.className =
-          "w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-blue-700";
-      } else {
-        loginBtn.disabled = true;
-        loginBtn.className =
-          "w-full bg-gray-400 text-white py-3 rounded-xl font-semibold cursor-not-allowed";
-      }
+      loginBtn.disabled = percentage !== 100;
+      loginBtn.className =
+        percentage === 100
+          ? "w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-blue-700"
+          : "w-full bg-gray-400 text-white py-3 rounded-xl font-semibold cursor-not-allowed";
     });
 
     document.getElementById("loginForm").addEventListener("submit", (e) => {
