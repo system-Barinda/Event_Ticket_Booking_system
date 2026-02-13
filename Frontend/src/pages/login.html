@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | EventBook</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -23,14 +22,12 @@
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen px-4">
 
-  <!-- ===== LOGIN CARD ===== -->
   <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
 
     <h2 class="text-2xl font-bold text-center text-primary mb-6">
       Login to EventBook
     </h2>
 
-    <!-- ===== LOGIN FORM ===== -->
     <form id="loginForm" class="space-y-5">
 
       <!-- Email -->
@@ -63,7 +60,6 @@
             required
           />
 
-          <!-- Toggle Button -->
           <button
             type="button"
             id="togglePassword"
@@ -83,37 +79,31 @@
           </button>
         </div>
 
-        <!-- Strength Indicator -->
-        <div class="mt-2">
+        <!-- Percentage Indicator -->
+        <div class="mt-3">
           <div class="h-2 w-full bg-gray-200 rounded">
-            <div id="strengthBar" class="h-2 rounded transition-all"></div>
+            <div
+              id="progressBar"
+              class="h-2 rounded transition-all"
+              style="width: 0%"
+            ></div>
           </div>
-          <p id="strengthText" class="text-sm mt-1 font-medium"></p>
+          <p id="percentageText" class="text-sm mt-1 font-medium text-gray-600">
+            0%
+          </p>
         </div>
-
-        <p id="passwordError" class="text-red-500 text-sm mt-1 hidden"></p>
-      </div>
-
-      <!-- Remember / Forgot -->
-      <div class="flex items-center justify-between text-sm">
-        <label class="flex items-center gap-2">
-          <input type="checkbox" class="rounded">
-          Remember me
-        </label>
-        <a href="#" class="text-primary hover:underline">
-          Forgot password?
-        </a>
       </div>
 
       <!-- Submit -->
       <button
+        id="loginBtn"
         type="submit"
-        class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
+        disabled
+        class="w-full bg-gray-400 text-white py-3 rounded-xl font-semibold cursor-not-allowed transition"
       >
         Login
       </button>
 
-      <!-- Register -->
       <p class="text-center text-sm text-gray-600">
         Don’t have an account?
         <a href="register.html" class="text-primary font-medium hover:underline">
@@ -126,98 +116,53 @@
 
   <!-- ===== JAVASCRIPT ===== -->
   <script>
-    const form = document.getElementById("loginForm");
-    const email = document.getElementById("email");
     const password = document.getElementById("password");
-    const emailError = document.getElementById("emailError");
-    const passwordError = document.getElementById("passwordError");
+    const progressBar = document.getElementById("progressBar");
+    const percentageText = document.getElementById("percentageText");
+    const loginBtn = document.getElementById("loginBtn");
     const togglePassword = document.getElementById("togglePassword");
     const eyeIcon = document.getElementById("eyeIcon");
-    const strengthBar = document.getElementById("strengthBar");
-    const strengthText = document.getElementById("strengthText");
 
     // Show / Hide Password
     togglePassword.addEventListener("click", () => {
-      const isHidden = password.type === "password";
-      password.type = isHidden ? "text" : "password";
-
-      eyeIcon.innerHTML = isHidden
-        ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-             d="M3 3l18 18
-                M13.875 18.825A10.05 10.05 0 0112 19
-                c-4.478 0-8.268-2.943-9.542-7
-                a9.956 9.956 0 012.041-3.368" />`
-        : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-             d="M2.458 12C3.732 7.943 7.523 5 12 5
-                c4.478 0 8.268 2.943 9.542 7
-                -1.274 4.057-5.064 7-9.542 7
-                -4.477 0-8.268-2.943-9.542-7z" />`;
+      password.type = password.type === "password" ? "text" : "password";
     });
 
-    // Password Strength Checker
+    // Password Rules → Percentage
     password.addEventListener("input", () => {
       const value = password.value;
-      let strength = 0;
+      let score = 0;
 
-      if (value.length >= 6) strength++;
-      if (/[A-Z]/.test(value)) strength++;
-      if (/[0-9]/.test(value)) strength++;
-      if (/[^A-Za-z0-9]/.test(value)) strength++;
+      if (value.length >= 8) score++;
+      if (/[a-z]/.test(value)) score++;
+      if (/[A-Z]/.test(value)) score++;
+      if (/[0-9]/.test(value)) score++;
+      if (/[^A-Za-z0-9]/.test(value)) score++;
 
-      strengthBar.className = "h-2 rounded transition-all";
+      const percentage = (score / 5) * 100;
 
-      if (strength <= 1) {
-        strengthBar.classList.add("bg-red-500");
-        strengthBar.style.width = "25%";
-        strengthText.textContent = "Weak password";
-        strengthText.className = "text-sm mt-1 text-red-500 font-medium";
-      } else if (strength === 2 || strength === 3) {
-        strengthBar.classList.add("bg-yellow-500");
-        strengthBar.style.width = "60%";
-        strengthText.textContent = "Medium strength";
-        strengthText.className = "text-sm mt-1 text-yellow-600 font-medium";
+      progressBar.style.width = percentage + "%";
+      percentageText.textContent = percentage + "%";
+
+      progressBar.className = "h-2 rounded transition-all";
+
+      if (percentage < 100) {
+        progressBar.classList.add("bg-yellow-500");
+        loginBtn.disabled = true;
+        loginBtn.className =
+          "w-full bg-gray-400 text-white py-3 rounded-xl font-semibold cursor-not-allowed";
       } else {
-        strengthBar.classList.add("bg-green-500");
-        strengthBar.style.width = "100%";
-        strengthText.textContent = "Strong password";
-        strengthText.className = "text-sm mt-1 text-green-600 font-medium";
-      }
-
-      if (value.length === 0) {
-        strengthBar.style.width = "0";
-        strengthText.textContent = "";
+        progressBar.classList.add("bg-green-500");
+        loginBtn.disabled = false;
+        loginBtn.className =
+          "w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition";
       }
     });
 
-    // Form Validation
-    form.addEventListener("submit", function (e) {
+    // Submit
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
       e.preventDefault();
-
-      let valid = true;
-      emailError.classList.add("hidden");
-      passwordError.classList.add("hidden");
-
-      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/i;
-      if (!emailPattern.test(email.value.trim())) {
-        emailError.textContent = "Please enter a valid email address.";
-        emailError.classList.remove("hidden");
-        valid = false;
-      }
-
-      if (password.value.length < 6) {
-        passwordError.textContent = "Password must be at least 6 characters.";
-        passwordError.classList.remove("hidden");
-        valid = false;
-      }
-
-      if (valid) {
-        alert("Login successful!");
-        form.reset();
-        strengthBar.style.width = "0";
-        strengthText.textContent = "";
-      }
+      alert("Login allowed — password complete ✅");
     });
   </script>
 
