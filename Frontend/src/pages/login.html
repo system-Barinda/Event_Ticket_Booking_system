@@ -67,24 +67,29 @@
           </button>
         </div>
 
-        <!-- Progress -->
-        <div class="mt-3">
-          <div class="h-2 w-full bg-gray-200 rounded">
-            <div id="progressBar" class="h-2 rounded transition-all w-0 bg-yellow-500"></div>
-          </div>
-          <p id="percentageText" class="text-sm mt-1 font-medium text-gray-600">
-            0%
-          </p>
-        </div>
+        <!-- 🔹 HIDDEN UNTIL TYPING -->
+        <div id="passwordFeedback" class="hidden">
 
-        <!-- Rules (ALWAYS VISIBLE) -->
-        <ul class="mt-3 text-sm space-y-1">
-          <li id="rule-length" class="text-red-500">• At least 8 characters</li>
-          <li id="rule-lower" class="text-red-500">• One lowercase letter</li>
-          <li id="rule-upper" class="text-red-500">• One uppercase letter</li>
-          <li id="rule-number" class="text-red-500">• One number</li>
-          <li id="rule-symbol" class="text-red-500">• One symbol</li>
-        </ul>
+          <!-- Progress -->
+          <div class="mt-3">
+            <div class="h-2 w-full bg-gray-200 rounded">
+              <div id="progressBar" class="h-2 rounded transition-all w-0 bg-yellow-500"></div>
+            </div>
+            <p id="percentageText" class="text-sm mt-1 font-medium text-gray-600">
+              0%
+            </p>
+          </div>
+
+          <!-- Rules -->
+          <ul class="mt-3 text-sm space-y-1">
+            <li id="rule-length" class="text-red-500">• At least 8 characters</li>
+            <li id="rule-lower" class="text-red-500">• One lowercase letter</li>
+            <li id="rule-upper" class="text-red-500">• One uppercase letter</li>
+            <li id="rule-number" class="text-red-500">• One number</li>
+            <li id="rule-symbol" class="text-red-500">• One symbol</li>
+          </ul>
+
+        </div>
       </div>
 
       <!-- Submit -->
@@ -106,6 +111,7 @@
     const progressBar = document.getElementById("progressBar");
     const percentageText = document.getElementById("percentageText");
     const loginBtn = document.getElementById("loginBtn");
+    const feedback = document.getElementById("passwordFeedback");
 
     const rules = {
       length: document.getElementById("rule-length"),
@@ -117,6 +123,17 @@
 
     password.addEventListener("input", () => {
       const value = password.value;
+
+      // 🔹 Show feedback ONLY when typing starts
+      if (value.length > 0) {
+        feedback.classList.remove("hidden");
+      } else {
+        feedback.classList.add("hidden");
+        progressBar.style.width = "0%";
+        percentageText.textContent = "0%";
+        return;
+      }
+
       let score = 0;
 
       // Length
