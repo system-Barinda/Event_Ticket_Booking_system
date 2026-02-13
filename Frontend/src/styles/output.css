@@ -436,6 +436,9 @@
   .border-gray-800 {
     border-color: var(--color-gray-800);
   }
+  .border-slate-900 {
+    border-color: var(--color-slate-900);
+  }
   .bg-blue-300 {
     background-color: var(--color-blue-300);
   }
@@ -728,6 +731,20 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-blue-700);
+      }
+    }
+  }
+  .hover\:text-slate-300 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-slate-300);
+      }
+    }
+  }
+  .hover\:text-slate-900 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-slate-900);
       }
     }
   }
