@@ -33,7 +33,6 @@ if (empty($title) || empty($category) || empty($city)) {
 $imagePath = null;
 
 if (!empty($_FILES['event_image']['name'])) {
-
     $uploadDir = "../../../uploads/events/";
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
