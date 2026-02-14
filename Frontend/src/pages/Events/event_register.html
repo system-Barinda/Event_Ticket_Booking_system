@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Event</title>
-  <link rel="stylesheet" href="../../styles/output.css">
-  <!-- Tailwind CDN -->
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-200 min-h-screen flex items-center justify-center p-4">
 
   <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 md:p-10">
@@ -15,7 +16,11 @@
       Register New Event
     </h1>
 
-    <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- IMPORTANT: enctype for image upload -->
+    <form
+      class="grid grid-cols-1 md:grid-cols-2 gap-6"
+      enctype="multipart/form-data"
+    >
 
       <!-- Organizer ID -->
       <div>
@@ -23,8 +28,7 @@
         <input
           type="number"
           name="organizer_id"
-          placeholder="Enter organizer ID"
-          class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full border rounded-lg px-4 py-2"
         />
       </div>
 
@@ -35,8 +39,7 @@
           type="text"
           name="title"
           required
-          placeholder="Event title"
-          class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -46,7 +49,6 @@
         <input
           type="text"
           name="category"
-          placeholder="Music, Tech, Sports..."
           class="w-full border rounded-lg px-4 py-2"
         />
       </div>
@@ -57,7 +59,6 @@
         <input
           type="text"
           name="city"
-          placeholder="City"
           class="w-full border rounded-lg px-4 py-2"
         />
       </div>
@@ -68,7 +69,6 @@
         <input
           type="text"
           name="language"
-          placeholder="en, fr, rw..."
           class="w-full border rounded-lg px-4 py-2"
         />
       </div>
@@ -86,18 +86,41 @@
         </select>
       </div>
 
-      <!-- Description (full width) -->
+      <!-- Event Image Upload (FULL WIDTH) -->
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium mb-2">
+          Event Image
+        </label>
+
+        <input
+          type="file"
+          name="event_image"
+          accept="image/*"
+          onchange="previewImage(event)"
+          class="w-full border rounded-lg px-4 py-2 bg-white"
+        />
+
+        <!-- Image Preview -->
+        <div class="mt-4">
+          <img
+            id="imagePreview"
+            class="hidden max-h-64 rounded-lg border object-cover"
+            alt="Event Preview"
+          />
+        </div>
+      </div>
+
+      <!-- Description -->
       <div class="md:col-span-2">
         <label class="block text-sm font-medium mb-1">Description</label>
         <textarea
           name="description"
           rows="4"
-          placeholder="Event description"
           class="w-full border rounded-lg px-4 py-2"
         ></textarea>
       </div>
 
-      <!-- Accessibility Notes (full width) -->
+      <!-- Accessibility Notes -->
       <div class="md:col-span-2">
         <label class="block text-sm font-medium mb-1">
           Accessibility Notes
@@ -105,12 +128,11 @@
         <textarea
           name="accessibility_notes"
           rows="3"
-          placeholder="Wheelchair access, sign language, etc."
           class="w-full border rounded-lg px-4 py-2"
         ></textarea>
       </div>
 
-     
+      <!-- Submit -->
       <div class="md:col-span-2">
         <button
           type="submit"
@@ -122,6 +144,19 @@
 
     </form>
   </div>
+
+  <!-- Image Preview Script -->
+  <script>
+    function previewImage(event) {
+      const image = document.getElementById("imagePreview");
+      const file = event.target.files[0];
+
+      if (file) {
+        image.src = URL.createObjectURL(file);
+        image.classList.remove("hidden");
+      }
+    }
+  </script>
 
 </body>
 </html>
