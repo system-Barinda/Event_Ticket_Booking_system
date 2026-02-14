@@ -1,185 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create Event</title>
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Event</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-200 min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 md:p-10">
-    <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center">
-      Register New Event
-    </h1>
+    <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 md:p-10">
+        <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center">
+            Register New Event
+        </h1>
 
-    <form
-      class="grid grid-cols-1 md:grid-cols-2 gap-6"
-      enctype="multipart/form-data"
-    >
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-6" enctype="multipart/form-data">
 
-      <!-- Organizer ID -->
-      <div>
-        <label class="block text-sm font-medium mb-1">Organizer ID</label>
-        <input
-          type="number"
-          name="organizer_id"
-          class="w-full border rounded-lg px-4 py-2"
-        />
-      </div>
+            <!-- Organizer ID -->
+            <div>
+                <label class="block text-sm font-medium mb-1">Organizer ID</label>
+                <input type="number" name="organizer_id" class="w-full border rounded-lg px-4 py-2" />
+            </div>
 
-      <!-- Event Title -->
-      <div>
-        <label class="block text-sm font-medium mb-1">Event Title *</label>
-        <input
-          type="text"
-          name="title"
-          required
-          class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+            <!-- Event Title -->
+            <div>
+                <label class="block text-sm font-medium mb-1">Event Title *</label>
+                <input type="text" name="title" required
+                    class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" />
+            </div>
 
-      <!-- Category -->
-      <div>
-        <label class="block text-sm font-medium mb-1">Category</label>
-        <input
-          type="text"
-          name="category"
-          class="w-full border rounded-lg px-4 py-2"
-        />
-      </div>
+            <!-- Category -->
+            <div>
+                <label class="block text-sm font-medium mb-1">Category</label>
+                <input type="text" name="category" class="w-full border rounded-lg px-4 py-2" />
+            </div>
 
-      <!-- City -->
-      <div>
-        <label class="block text-sm font-medium mb-1">City</label>
-        <input
-          type="text"
-          name="city"
-          class="w-full border rounded-lg px-4 py-2"
-        />
-      </div>
+            <!-- City -->
+            <div>
+                <label class="block text-sm font-medium mb-1">City</label>
+                <input type="text" name="city" class="w-full border rounded-lg px-4 py-2" />
+            </div>
 
-      <!-- Language -->
-      <div>
-        <label class="block text-sm font-medium mb-1">Language</label>
-        <input
-          type="text"
-          name="language"
-          class="w-full border rounded-lg px-4 py-2"
-        />
-      </div>
+            <!-- Language -->
+            <div>
+                <label class="block text-sm font-medium mb-1">Language</label>
+                <input type="text" name="language" class="w-full border rounded-lg px-4 py-2" />
+            </div>
 
-      <!-- Status -->
-      <div>
-        <label class="block text-sm font-medium mb-1">Status</label>
-        <select
-          name="status"
-          class="w-full border rounded-lg px-4 py-2"
-        >
-          <option value="pending" selected>Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
-        </select>
-      </div>
+            <!-- Status -->
+            <div>
+                <label class="block text-sm font-medium mb-1">Status</label>
+                <select name="status" class="w-full border rounded-lg px-4 py-2">
+                    <option value="pending" selected>Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
 
-      <!-- Event Image Upload -->
-      <div class="md:col-span-2">
-        <label class="block text-sm font-medium mb-2">
-          Event Image (Max 2MB)
-        </label>
+            <!-- Event Image Upload -->
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-2">
+                    Event Image (Max 2MB)
+                </label>
 
-        <input
-          type="file"
-          accept="image/*"
-          onchange="previewImage(event)"
-          class="w-full border rounded-lg px-4 py-2 bg-white"
-        />
+                <input type="file" accept="image/*" onchange="previewImage(event)"
+                    class="w-full border rounded-lg px-4 py-2 bg-white" />
 
-        <!-- Preview -->
-        <img
-          id="imagePreview"
-          class="hidden mt-4 w-full max-h-64 rounded-lg border object-cover"
-          alt="Event Preview"
-        />
-      </div>
+                <!-- Preview -->
+                <img id="imagePreview" class="hidden mt-4 w-full max-h-64 rounded-lg border object-cover"
+                    alt="Event Preview" />
+            </div>
 
-      <!-- Description -->
-      <div class="md:col-span-2">
-        <label class="block text-sm font-medium mb-1">Description</label>
-        <textarea
-          name="description"
-          rows="4"
-          class="w-full border rounded-lg px-4 py-2"
-        ></textarea>
-      </div>
+            <!-- Description -->
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-1">Description</label>
+                <textarea name="description" rows="4" class="w-full border rounded-lg px-4 py-2"></textarea>
+            </div>
 
-      <!-- Accessibility Notes -->
-      <div class="md:col-span-2">
-        <label class="block text-sm font-medium mb-1">
-          Accessibility Notes
-        </label>
-        <textarea
-          name="accessibility_notes"
-          rows="3"
-          class="w-full border rounded-lg px-4 py-2"
-        ></textarea>
-      </div>
+            <!-- Accessibility Notes -->
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-1">
+                    Accessibility Notes
+                </label>
+                <textarea name="accessibility_notes" rows="3" class="w-full border rounded-lg px-4 py-2"></textarea>
+            </div>
 
-      <!-- Submit -->
-      <div class="md:col-span-2">
-        <button
-          type="submit"
-          class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-        >
-          Create Event
-        </button>
-      </div>
+            <!-- Submit -->
+            <div class="md:col-span-2">
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                    Create Event
+                </button>
+            </div>
 
-    </form>
-  </div>
+        </form>
+    </div>
 
-  <!-- Image Preview + File Size Limit Script -->
-  <script>
-    function previewImage(event) {
-      const fileInput = event.target;
-      const image = document.getElementById("imagePreview");
-      const file = fileInput.files[0];
+    <!-- Image Preview + File Size Limit Script -->
+    <script>
+        function previewImage(event) {
+            const fileInput = event.target;
+            const image = document.getElementById("imagePreview");
+            const file = fileInput.files[0];
 
-      // Max size: 2MB
-      const MAX_SIZE = 2 * 1024 * 1024;
+            // Max size: 2MB
+            const MAX_SIZE = 2 * 1024 * 1024;
 
-      if (!file) return;
+            if (!file) return;
 
-      // Validate type
-      if (!file.type.startsWith("image/")) {
-        alert("Please select a valid image file.");
-        fileInput.value = "";
-        image.classList.add("hidden");
-        return;
-      }
+            // Validate type
+            if (!file.type.startsWith("image/")) {
+                alert("Please select a valid image file.");
+                fileInput.value = "";
+                image.classList.add("hidden");
+                return;
+            }
 
-      // Validate size
-      if (file.size > MAX_SIZE) {
-        alert("Image size must be less than 2MB.");
-        fileInput.value = "";
-        image.classList.add("hidden");
-        return;
-      }
+            // Validate size
+            if (file.size > MAX_SIZE) {
+                alert("Image size must be less than 2MB.");
+                fileInput.value = "";
+                image.classList.add("hidden");
+                return;
+            }
 
-      const reader = new FileReader();
+            const reader = new FileReader();
 
-      reader.onload = function (e) {
-        image.src = e.target.result;
-        image.classList.remove("hidden");
-        image.style.display = "block";
-      };
+            reader.onload = function (e) {
+                image.src = e.target.result;
+                image.classList.remove("hidden");
+                image.style.display = "block";
+            };
 
-      reader.readAsDataURL(file);
-    }
-  </script>
+            reader.readAsDataURL(file);
+        }
+    </script>
 
 </body>
+
 </html>
