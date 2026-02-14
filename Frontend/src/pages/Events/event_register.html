@@ -88,7 +88,7 @@
       <!-- Event Image Upload -->
       <div class="md:col-span-2">
         <label class="block text-sm font-medium mb-2">
-          Event Image
+          Event Image (Max 2MB)
         </label>
 
         <input
@@ -141,17 +141,29 @@
     </form>
   </div>
 
-  <!-- Image Preview Script (100% working) -->
+  <!-- Image Preview + File Size Limit Script -->
   <script>
     function previewImage(event) {
       const fileInput = event.target;
       const image = document.getElementById("imagePreview");
       const file = fileInput.files[0];
 
+      // Max size: 2MB
+      const MAX_SIZE = 2 * 1024 * 1024;
+
       if (!file) return;
 
+      // Validate type
       if (!file.type.startsWith("image/")) {
-        alert("Please select a valid image file");
+        alert("Please select a valid image file.");
+        fileInput.value = "";
+        image.classList.add("hidden");
+        return;
+      }
+
+      // Validate size
+      if (file.size > MAX_SIZE) {
+        alert("Image size must be less than 2MB.");
         fileInput.value = "";
         image.classList.add("hidden");
         return;
