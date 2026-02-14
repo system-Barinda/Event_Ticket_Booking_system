@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Event</title>
+  <link rel="stylesheet" href="../../styles/output.css">
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 md:p-10">
+    <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center">
+      Register New Event
+    </h1>
+
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Organizer ID -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Organizer ID</label>
+        <input
+          type="number"
+          name="organizer_id"
+          placeholder="Enter organizer ID"
+          class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Title -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Event Title *</label>
+        <input
+          type="text"
+          name="title"
+          required
+          placeholder="Event title"
+          class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Category -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Category</label>
+        <input
+          type="text"
+          name="category"
+          placeholder="Music, Tech, Sports..."
+          class="w-full border rounded-lg px-4 py-2"
+        />
+      </div>
+
+      <!-- City -->
+      <div>
+        <label class="block text-sm font-medium mb-1">City</label>
+        <input
+          type="text"
+          name="city"
+          placeholder="City"
+          class="w-full border rounded-lg px-4 py-2"
+        />
+      </div>
+
+      <!-- Language -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Language</label>
+        <input
+          type="text"
+          name="language"
+          placeholder="en, fr, rw..."
+          class="w-full border rounded-lg px-4 py-2"
+        />
+      </div>
+
+      <!-- Status -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Status</label>
+        <select
+          name="status"
+          class="w-full border rounded-lg px-4 py-2"
+        >
+          <option value="pending" selected>Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+
+      <!-- Description (full width) -->
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium mb-1">Description</label>
+        <textarea
+          name="description"
+          rows="4"
+          placeholder="Event description"
+          class="w-full border rounded-lg px-4 py-2"
+        ></textarea>
+      </div>
+
+      <!-- Accessibility Notes (full width) -->
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium mb-1">
+          Accessibility Notes
+        </label>
+        <textarea
+          name="accessibility_notes"
+          rows="3"
+          placeholder="Wheelchair access, sign language, etc."
+          class="w-full border rounded-lg px-4 py-2"
+        ></textarea>
+      </div>
+
+     
+      <div class="md:col-span-2">
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+        >
+          Create Event
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</body>
+</html>
