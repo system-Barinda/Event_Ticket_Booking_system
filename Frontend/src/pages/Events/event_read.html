@@ -8,47 +8,58 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen p-6">
+<body class="bg-gray-100 min-h-screen">
 
-  <!-- Title -->
-  <h1 class="text-3xl font-bold text-center mb-8">
-    🎟️ Available Events
-  </h1>
+  <!-- Page Container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-  <!-- Filters -->
-  <div class="flex flex-wrap gap-4 justify-center mb-8">
-    <select
-      id="category"
-      class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      <option value="">All Categories</option>
-      <option value="Music">Music</option>
-      <option value="Tech">Tech</option>
-      <option value="Sports">Sports</option>
-    </select>
+    <!-- Page Title -->
+    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-800 text-center mb-8">
+      Available Events
+    </h1>
 
-    <select
-      id="city"
-      class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      <option value="">All Cities</option>
-      <option value="Kigali">Kigali</option>
-      <option value="Huye">Huye</option>
-    </select>
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-sm p-4 mb-8">
+      <div class="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
 
-    <button
-      onclick="loadEvents()"
-      class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-    >
-      Filter
-    </button>
+        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <select
+            id="category"
+            class="w-full sm:w-48 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Categories</option>
+            <option value="Music">Music</option>
+            <option value="Tech">Tech</option>
+            <option value="Sports">Sports</option>
+          </select>
+
+          <select
+            id="city"
+            class="w-full sm:w-48 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Cities</option>
+            <option value="Kigali">Kigali</option>
+            <option value="Huye">Huye</option>
+          </select>
+        </div>
+
+        <button
+          onclick="loadEvents()"
+          class="w-full sm:w-auto px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+        >
+          Apply Filters
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div
+      id="events"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+    ></div>
+
   </div>
-
-  <!-- Events Grid -->
-  <div
-    id="events"
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-  ></div>
 
   <script>
     async function loadEvents() {
@@ -82,39 +93,40 @@
 
       data.data.forEach(event => {
         container.innerHTML += `
-          <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+          <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden">
+            
             <img
               src="http://localhost/Event_Ticket_Booking_system/${event.event_image || 'uploads/default.jpg'}"
               alt="Event image"
-              class="w-full h-40 object-cover"
+              class="w-full h-44 object-cover"
             />
 
             <div class="p-4">
-              <h3 class="text-lg font-semibold mb-2">
+              <h3 class="text-base font-semibold text-gray-800 mb-1">
                 ${event.title}
               </h3>
 
-              <p class="text-sm text-gray-600 mb-1">
-                📍 ${event.city} · 🗂 ${event.category}
+              <p class="text-sm text-gray-500 mb-1">
+                ${event.city} · ${event.category}
               </p>
 
-              <p class="text-sm text-gray-600 mb-2">
-                👤 Organizer: ${event.organizer}
+              <p class="text-sm text-gray-500 mb-3">
+                Organizer: ${event.organizer}
               </p>
 
-              <span class="inline-block text-xs font-bold px-3 py-1 rounded-full
+              <span class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full
                 ${event.status === 'approved'
                   ? 'bg-green-100 text-green-700'
                   : 'bg-yellow-100 text-yellow-700'}">
                 ${event.status.toUpperCase()}
               </span>
             </div>
+
           </div>
         `;
       });
     }
 
-    // Load events on page load
     loadEvents();
   </script>
 
