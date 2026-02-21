@@ -3,143 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <title>Events</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-    }
 
-    h1 {
-      text-align: center;
-    }
-
-    .filters {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    select, button {
-      padding: 8px;
-      font-size: 14px;
-    }
-
-    .events {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    .card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-    }
-
-    .card-body {
-      padding: 15px;
-    }
-
-    .card-body h3 {
-      margin: 0 0 10px;
-    }
-
-    .meta {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 8px;
-    }
-
-    .status {
-      font-size: 12px;
-      font-weight: bold;
-      color: #0a7;
-    }
-  </style>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
-<h1>🎟️ Available Events</h1>
+<body class="bg-gray-100 min-h-screen p-6">
 
-<div class="filters">
-  <select id="category">
-    <option value="">All Categories</option>
-    <option value="Music">Music</option>
-    <option value="Tech">Tech</option>
-    <option value="Sports">Sports</option>
-  </select>
+  <!-- Title -->
+  <h1 class="text-3xl font-bold text-center mb-8">
+    🎟️ Available Events
+  </h1>
 
-  <select id="city">
-    <option value="">All Cities</option>
-    <option value="Kigali">Kigali</option>
-    <option value="Huye">Huye</option>
-  </select>
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-4 justify-center mb-8">
+    <select
+      id="category"
+      class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="">All Categories</option>
+      <option value="Music">Music</option>
+      <option value="Tech">Tech</option>
+      <option value="Sports">Sports</option>
+    </select>
 
-  <button onclick="loadEvents()">Filter</button>
-</div>
+    <select
+      id="city"
+      class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="">All Cities</option>
+      <option value="Kigali">Kigali</option>
+      <option value="Huye">Huye</option>
+    </select>
 
-<div class="events" id="events"></div>
+    <button
+      onclick="loadEvents()"
+      class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+    >
+      Filter
+    </button>
+  </div>
 
-<script>
-  async function loadEvents() {
-    const category = document.getElementById("category").value;
-    const city = document.getElementById("city").value;
+  <!-- Events Grid -->
+  <div
+    id="events"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+  ></div>
 
-    let url = "http://localhost/Event_Ticket_Booking_system/backend/modules/events/read.php";
+  <script>
+    async function loadEvents() {
+      const category = document.getElementById("category").value;
+      const city = document.getElementById("city").value;
 
-    const params = new URLSearchParams();
-    if (category) params.append("category", category);
-    if (city) params.append("city", city);
+      let url = "http://localhost/Event_Ticket_Booking_system/backend/modules/events/read.php";
 
-    if (params.toString()) {
-      url += "?" + params.toString();
-    }
+      const params = new URLSearchParams();
+      if (category) params.append("category", category);
+      if (city) params.append("city", city);
 
-    const res = await fetch(url);
-    const data = await res.json();
+      if (params.toString()) {
+        url += "?" + params.toString();
+      }
 
-    const container = document.getElementById("events");
-    container.innerHTML = "";
+      const res = await fetch(url);
+      const data = await res.json();
 
-    if (!data.success || data.count === 0) {
-      container.innerHTML = "<p>No events found.</p>";
-      return;
-    }
+      const container = document.getElementById("events");
+      container.innerHTML = "";
 
-    data.data.forEach(event => {
-      container.innerHTML += `
-        <div class="card">
-          <img src="http://localhost/Event_Ticket_Booking_system/${event.event_image || 'uploads/default.jpg'}" />
-          <div class="card-body">
-            <h3>${event.title}</h3>
-            <div class="meta">
-              📍 ${event.city} | 🗂 ${event.category}
-            </div>
-            <div class="meta">
-              👤 Organizer: ${event.organizer}
-            </div>
-            <div class="status">
-              ${event.status.toUpperCase()}
+      if (!data.success || data.count === 0) {
+        container.innerHTML = `
+          <p class="text-center text-gray-500 col-span-full">
+            No events found.
+          </p>
+        `;
+        return;
+      }
+
+      data.data.forEach(event => {
+        container.innerHTML += `
+          <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+            <img
+              src="http://localhost/Event_Ticket_Booking_system/${event.event_image || 'uploads/default.jpg'}"
+              alt="Event image"
+              class="w-full h-40 object-cover"
+            />
+
+            <div class="p-4">
+              <h3 class="text-lg font-semibold mb-2">
+                ${event.title}
+              </h3>
+
+              <p class="text-sm text-gray-600 mb-1">
+                📍 ${event.city} · 🗂 ${event.category}
+              </p>
+
+              <p class="text-sm text-gray-600 mb-2">
+                👤 Organizer: ${event.organizer}
+              </p>
+
+              <span class="inline-block text-xs font-bold px-3 py-1 rounded-full
+                ${event.status === 'approved'
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-yellow-100 text-yellow-700'}">
+                ${event.status.toUpperCase()}
+              </span>
             </div>
           </div>
-        </div>
-      `;
-    });
-  }
+        `;
+      });
+    }
 
-  // Load on page open
-  loadEvents();
-</script>
+    // Load events on page load
+    loadEvents();
+  </script>
 
 </body>
 </html>
