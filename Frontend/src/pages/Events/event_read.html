@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Events</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    select, button {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .events {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 15px;
+    }
+
+    .card-body h3 {
+      margin: 0 0 10px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .status {
+      font-size: 12px;
+      font-weight: bold;
+      color: #0a7;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎟️ Available Events</h1>
+
+<div class="filters">
+  <select id="category">
+    <option value="">All Categories</option>
+    <option value="Music">Music</option>
+    <option value="Tech">Tech</option>
+    <option value="Sports">Sports</option>
+  </select>
+
+  <select id="city">
+    <option value="">All Cities</option>
+    <option value="Kigali">Kigali</option>
+    <option value="Huye">Huye</option>
+  </select>
+
+  <button onclick="loadEvents()">Filter</button>
+</div>
+
+<div class="events" id="events"></div>
+
+<script>
+  async function loadEvents() {
+    const category = document.getElementById("category").value;
+    const city = document.getElementById("city").value;
+
+    let url = "http://localhost/Event_Ticket_Booking_system/backend/modules/events/read.php";
+
+    const params = new URLSearchParams();
+    if (category) params.append("category", category);
+    if (city) params.append("city", city);
+
+    if (params.toString()) {
+      url += "?" + params.toString();
+    }
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const container = document.getElementById("events");
+    container.innerHTML = "";
+
+    if (!data.success || data.count === 0) {
+      container.innerHTML = "<p>No events found.</p>";
+      return;
+    }
+
+    data.data.forEach(event => {
+      container.innerHTML += `
+        <div class="card">
+          <img src="http://localhost/Event_Ticket_Booking_system/${event.event_image || 'uploads/default.jpg'}" />
+          <div class="card-body">
+            <h3>${event.title}</h3>
+            <div class="meta">
+              📍 ${event.city} | 🗂 ${event.category}
+            </div>
+            <div class="meta">
+              👤 Organizer: ${event.organizer}
+            </div>
+            <div class="status">
+              ${event.status.toUpperCase()}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // Load on page open
+  loadEvents();
+</script>
+
+</body>
+</html>
