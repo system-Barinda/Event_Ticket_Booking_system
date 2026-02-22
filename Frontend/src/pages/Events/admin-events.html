@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin | Manage Events</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Admin Dashboard</h1>
+    <span class="text-sm text-gray-300">Event Management</span>
+  </header>
+
+  <!-- Main -->
+  <main class="p-6 max-w-7xl mx-auto">
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+      All Events
+    </h2>
+
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white rounded-xl shadow">
+      <table class="min-w-full text-sm">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+          <tr>
+            <th class="px-4 py-3 text-left">Title</th>
+            <th class="px-4 py-3 text-left">Category</th>
+            <th class="px-4 py-3 text-left">City</th>
+            <th class="px-4 py-3 text-left">Status</th>
+            <th class="px-4 py-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="eventsTable" class="divide-y">
+          <!-- Events will load here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Message -->
+    <div id="message" class="mt-4 font-medium text-center"></div>
+  </main>
+
+  <script>
+    async function loadEvents() {
+      try {
+        const res = await fetch(
+          "http://localhost/Event_Ticket_Booking_system/backend/modules/events/read_all.php"
+        );
+        const result = await res.json();
+
+        if (!result.success) {
+          alert(result.message);
+          return;
+        }
+
+        const table = document.getElementById("eventsTable");
+        table.innerHTML = "";
+
+        result.data.forEach(event => {
+          let statusColor = "bg-gray-300 text-gray-800";
+
+          if (event.status === "approved") {
+            statusColor = "bg-green-100 text-green-700";
+          } else if (event.status === "pending") {
+            statusColor = "bg-yellow-100 text-yellow-700";
+          } else if (event.status === "cancelled") {
+            statusColor = "bg-red-100 text-red-700";
+          }
+
+          table.innerHTML += `
+            <tr>
+              <td class="px-4 py-3 font-medium">${event.title}</td>
+              <td class="px-4 py-3">${event.category}</td>
+              <td class="px-4 py-3">${event.city}</td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-1 rounded-full text-xs font-semibold ${statusColor}">
+                  ${event.status}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-center space-x-2">
+                <button
+                  onclick="approveEvent(${event.event_id})"
+                  class="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-md text-xs"
+                >
+                  Approve
+                </button>
+
+                <a
+                  href="edit-event.html?id=${event.event_id}"
+                  class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs"
+                >
+                  Edit
+                </a>
+
+                <button
+                  onclick="deleteEvent(${event.event_id})"
+                  class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md text-xs"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Failed to load events");
+      }
+    }
+
+    async function approveEvent(id) {
+      if (!confirm("Approve this event?")) return;
+
+      const formData = new FormData();
+      formData.append("event_id", id);
+      formData.append("status", "approved");
+
+      const res = await fetch(
+        "http://localhost/Event_Ticket_Booking_system/backend/modules/events/update_status.php",
+        { method: "POST", body: formData }
+      );
+
+      const result = await res.json();
+      document.getElementById("message").textContent = result.message;
+      document.getElementById("message").className =
+        "mt-4 text-center font-medium text-green-600";
+
+      loadEvents();
+    }
+
+    async function deleteEvent(id) {
+      if (!confirm("Delete this event permanently?")) return;
+
+      const formData = new FormData();
+      formData.append("event_id", id);
+
+      const res = await fetch(
+        "http://localhost/Event_Ticket_Booking_system/backend/modules/events/delete.php",
+        { method: "POST", body: formData }
+      );
+
+      const result = await res.json();
+      document.getElementById("message").textContent = result.message;
+      document.getElementById("message").className =
+        "mt-4 text-center font-medium text-red-600";
+
+      loadEvents();
+    }
+
+    loadEvents();
+  </script>
+
+</body>
+</html>
