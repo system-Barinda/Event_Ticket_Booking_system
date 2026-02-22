@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Edit Event | Admin</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,7 +12,7 @@
     }
 
     .container {
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       background: #fff;
       padding: 20px;
@@ -21,24 +22,52 @@
 
     h2 {
       text-align: center;
+      margin-bottom: 15px;
     }
 
-    input, textarea, button {
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, textarea, select, button {
       width: 100%;
       padding: 10px;
+      margin-top: 6px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    img {
+      max-width: 100%;
       margin-top: 10px;
+      border-radius: 4px;
     }
 
     button {
       background: #007bff;
       color: #fff;
       border: none;
+      margin-top: 15px;
       cursor: pointer;
+      font-size: 16px;
     }
 
     button:hover {
       background: #0056b3;
     }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .success { color: green; }
+    .error { color: red; }
   </style>
 </head>
 <body>
@@ -46,23 +75,48 @@
 <div class="container">
   <h2>Edit Event</h2>
 
-  <form id="editForm">
+  <form id="editForm" enctype="multipart/form-data">
+
+    <!-- Hidden Event ID -->
     <input type="hidden" id="event_id" name="event_id">
 
-    <label>Event Title</label>
+    <label>Title *</label>
     <input type="text" id="title" name="title" required>
 
+    <label>Category *</label>
+    <input type="text" id="category" name="category" required>
+
+    <label>City *</label>
+    <input type="text" id="city" name="city" required>
+
+    <label>Language</label>
+    <input type="text" id="language" name="language">
+
     <label>Description</label>
-    <textarea id="description" name="description" required></textarea>
+    <textarea id="description" name="description" rows="3"></textarea>
 
-    <label>Event Date</label>
-    <input type="date" id="event_date" name="event_date" required>
+    <label>Accessibility Notes</label>
+    <textarea id="accessibility_notes" name="accessibility_notes" rows="3"></textarea>
 
-    <label>Location</label>
-    <input type="text" id="location" name="location" required>
+    <!-- Admin only -->
+    <label>Status</label>
+    <select id="status" name="status">
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+
+    <!-- Image -->
+    <label>Current Image</label>
+    <img id="currentImage" src="" alt="Event Image">
+
+    <label>Update Image (optional)</label>
+    <input type="file" name="event_image" accept="image/png, image/jpeg">
 
     <button type="submit">Update Event</button>
   </form>
+
+  <div id="message" class="message"></div>
 </div>
 
 <script>
@@ -76,43 +130,85 @@
 
   document.getElementById("event_id").value = eventId;
 
-  // Load event details
-  fetch(`http://localhost/Event_Ticket_Booking_system/backend/modules/events/read_one.php?id=${eventId}`)
-    .then(res => res.json())
-    .then(data => {
-      if (!data.success) {
-        alert("Event not found");
+  // =========================
+  // LOAD EVENT
+  // =========================
+  async function loadEvent() {
+    try {
+      const res = await fetch(
+        `http://localhost/Event_Ticket_Booking_system/backend/modules/events/read_one.php?id=${eventId}`
+      );
+      const result = await res.json();
+
+      if (!result.success) {
+        alert(result.message || "Failed to load event");
         return;
       }
 
-      const event = data.event;
-      document.getElementById("title").value = event.title;
-      document.getElementById("description").value = event.description;
-      document.getElementById("event_date").value = event.event_date;
-      document.getElementById("location").value = event.location;
-    });
+      const event = result.data || result.event;
 
-  // Update event
+      document.getElementById("title").value = event.title;
+      document.getElementById("category").value = event.category;
+      document.getElementById("city").value = event.city;
+      document.getElementById("language").value = event.language || "";
+      document.getElementById("description").value = event.description || "";
+      document.getElementById("accessibility_notes").value =
+        event.accessibility_notes || "";
+
+      if (event.status) {
+        document.getElementById("status").value = event.status;
+      }
+
+      if (event.event_image) {
+        document.getElementById("currentImage").src =
+          `http://localhost/Event_Ticket_Booking_system/${event.event_image}`;
+      } else {
+        document.getElementById("currentImage").style.display = "none";
+      }
+
+    } catch (err) {
+      alert("Error loading event");
+      console.error(err);
+    }
+  }
+
+  loadEvent();
+
+  // =========================
+  // UPDATE EVENT
+  // =========================
   document.getElementById("editForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const message = document.getElementById("message");
     const formData = new FormData(e.target);
 
-    const res = await fetch(
-      "http://localhost/Event_Ticket_Booking_system/backend/modules/events/update.php",
-      {
-        method: "POST",
-        body: formData
+    try {
+      const res = await fetch(
+        "http://localhost/Event_Ticket_Booking_system/backend/modules/events/update.php",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        message.textContent = data.message;
+        message.className = "message success";
+
+        setTimeout(() => {
+          window.location.href = "admin-events.html";
+        }, 1200);
+      } else {
+        message.textContent = data.message;
+        message.className = "message error";
       }
-    );
-
-    const data = await res.json();
-
-    if (data.success) {
-      alert("Event updated successfully");
-      window.location.href = "admin-events.html";
-    } else {
-      alert(data.message);
+    } catch (err) {
+      message.textContent = "Update failed";
+      message.className = "message error";
+      console.error(err);
     }
   });
 </script>
