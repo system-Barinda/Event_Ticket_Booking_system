@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex justify-center items-start pt-20">
+
+<!-- Notification Bell -->
+<div class="relative">
+  <button onclick="toggleNotif()" class="relative bg-white p-3 rounded-full shadow">
+    🔔
+    <span id="notifCount"
+      class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+    </span>
+  </button>
+
+  <!-- Dropdown -->
+  <div id="notifBox"
+    class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg overflow-hidden z-50">
+
+    <div class="px-4 py-3 font-semibold border-b">
+      Notifications
+    </div>
+
+    <div id="notifList" class="max-h-80 overflow-y-auto"></div>
+
+    <div class="text-center text-sm text-gray-500 py-2">
+      End of notifications
+    </div>
+  </div>
+</div>
+
+<script>
+const USER_ID = 1; // 🔴 replace with session user id
+
+function toggleNotif() {
+  document.getElementById("notifBox").classList.toggle("hidden");
+}
+
+async function loadNotifications() {
+  const res = await fetch(
+    `http://localhost/Event_Ticket_Booking_system/backend/modules/notifications/read.php?user_id=${USER_ID}`
+  );
+  const data = await res.json();
+
+  const list = document.getElementById("notifList");
+  const countBadge = document.getElementById("notifCount");
+
+  list.innerHTML = "";
+  let unread = 0;
+
+  if (!data.success || data.count === 0) {
+    list.innerHTML = `
+      <p class="text-center text-gray-500 py-4">No notifications</p>
+    `;
+    countBadge.classList.add("hidden");
+    return;
+  }
+
+  data.data.forEach(n => {
+    if (n.is_read == 0) unread++;
+
+    list.innerHTML += `
+      <div onclick="markRead(${n.notif_id})"
+        class="px-4 py-3 border-b cursor-pointer
+        ${n.is_read == 0 ? 'bg-blue-50' : 'bg-white'} hover:bg-gray-100">
+        
+        <p class="text-sm text-gray-800">${n.message}</p>
+        <p class="text-xs text-gray-500 mt-1">${n.sent_at}</p>
+      </div>
+    `;
+  });
+
+  if (unread > 0) {
+    countBadge.textContent = unread;
+    countBadge.classList.remove("hidden");
+  } else {
+    countBadge.classList.add("hidden");
+  }
+}
+
+async function markRead(id) {
+  await fetch(
+    "http://localhost/Event_Ticket_Booking_system/backend/modules/notifications/mark_read.php",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `notif_id=${id}`
+    }
+  );
+  loadNotifications();
+}
+
+loadNotifications();
+</script>
+
+</body>
+</html>
