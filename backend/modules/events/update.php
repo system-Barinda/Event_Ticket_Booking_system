@@ -8,25 +8,31 @@ header("Content-Type: application/json");
 // AUTH CHECK
 // =========================
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unauthorized"
+    ]);
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = (int) $_SESSION['user_id'];
 $role    = $_SESSION['role'] ?? 'user';
 
 // =========================
 // REQUEST METHOD
 // =========================
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    echo json_encode(["success" => false, "message" => "Invalid request"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid request method"
+    ]);
     exit;
 }
 
 // =========================
-// INPUT
+// INPUT & SANITIZATION
 // =========================
-$event_id    = intval($_POST['event_id'] ?? 0);
+$event_id    = (int) ($_POST['event_id'] ?? 0);
 $title       = trim($_POST['title'] ?? '');
 $category    = trim($_POST['category'] ?? '');
 $city        = trim($_POST['city'] ?? '');
@@ -34,13 +40,19 @@ $language    = trim($_POST['language'] ?? '');
 $description = trim($_POST['description'] ?? '');
 $access      = trim($_POST['accessibility_notes'] ?? '');
 
-// Admin only
-$status = ($role === 'admin' && isset($_POST['status']))
-    ? $_POST['status']
-    : null;
+$status = null;
+if ($role === 'admin' && isset($_POST['status'])) {
+    $status = trim($_POST['status']);
+}
 
-if ($event_id === 0 || empty($title) || empty($category) || empty($city)) {
-    echo json_encode(["success" => false, "message" => "Missing required fields"]);
+// =========================
+// BASIC VALIDATION
+// =========================
+if ($event_id <= 0 || $title === '' || $category === '' || $city === '') {
+    echo json_encode([
+        "success" => false,
+        "message" => "Missing required fields"
+    ]);
     exit;
 }
 
@@ -58,14 +70,20 @@ $checkStmt->execute();
 $result = $checkStmt->get_result();
 
 if ($result->num_rows === 0) {
-    echo json_encode(["success" => false, "message" => "Event not found"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Event not found"
+    ]);
     exit;
 }
 
 $event = $result->fetch_assoc();
 
-if ($role !== 'admin' && $event['organizer_id'] != $user_id) {
-    echo json_encode(["success" => false, "message" => "Forbidden"]);
+if ($role !== 'admin' && (int)$event['organizer_id'] !== $user_id) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Forbidden"
+    ]);
     exit;
 }
 
@@ -78,6 +96,7 @@ $checkStmt->close();
 $imagePath = $currentImage;
 
 if (!empty($_FILES['event_image']['name'])) {
+
     $uploadDir = "../../../uploads/events/";
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
@@ -85,42 +104,62 @@ if (!empty($_FILES['event_image']['name'])) {
 
     $file = $_FILES['event_image'];
 
-    if ($file['error'] !== 0) {
-        echo json_encode(["success" => false, "message" => "Image upload error"]);
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Image upload error"
+        ]);
         exit;
     }
 
     if ($file['size'] > 2 * 1024 * 1024) {
-        echo json_encode(["success" => false, "message" => "Image must be under 2MB"]);
+        echo json_encode([
+            "success" => false,
+            "message" => "Image must be under 2MB"
+        ]);
         exit;
     }
 
     $allowedExt = ['jpg', 'jpeg', 'png'];
-    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $extension  = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
     if (!in_array($extension, $allowedExt)) {
-        echo json_encode(["success" => false, "message" => "Invalid image type"]);
+        echo json_encode([
+            "success" => false,
+            "message" => "Only JPG, JPEG, PNG allowed"
+        ]);
         exit;
     }
 
-    $newName = uniqid("event_", true) . "." . $extension;
+    $newName   = uniqid("event_", true) . "." . $extension;
     $imagePath = "uploads/events/" . $newName;
 
-    move_uploaded_file($file['tmp_name'], "../../../" . $imagePath);
+    if (!move_uploaded_file($file['tmp_name'], "../../../" . $imagePath)) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to save image"
+        ]);
+        exit;
+    }
+
+    // OPTIONAL: remove old image
+    if (!empty($currentImage) && file_exists("../../../" . $currentImage)) {
+        unlink("../../../" . $currentImage);
+    }
 }
 
 // =========================
 // UPDATE QUERY
 // =========================
 $sql = "
-UPDATE events SET
-    title = ?,
-    category = ?,
-    city = ?,
-    language = ?,
-    description = ?,
-    accessibility_notes = ?,
-    event_image = ?
+    UPDATE events SET
+        title = ?,
+        category = ?,
+        city = ?,
+        language = ?,
+        description = ?,
+        accessibility_notes = ?,
+        event_image = ?
 ";
 
 $params = [
@@ -142,9 +181,8 @@ if ($status !== null) {
 }
 
 $sql .= " WHERE event_id = ?";
-
 $params[] = $event_id;
-$types .= "i";
+$types   .= "i";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param($types, ...$params);
