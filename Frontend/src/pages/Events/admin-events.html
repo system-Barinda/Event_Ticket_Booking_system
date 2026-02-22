@@ -17,14 +17,14 @@
     <span class="text-sm text-gray-300">Event Management</span>
   </header>
 
-  <!-- Main -->
+  <!-- Main Content -->
   <main class="p-6 max-w-7xl mx-auto">
 
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">
       All Events
     </h2>
 
-    <!-- Table -->
+    <!-- Events Table -->
     <div class="overflow-x-auto bg-white rounded-xl shadow">
       <table class="min-w-full text-sm">
         <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
@@ -36,22 +36,25 @@
             <th class="px-4 py-3 text-center">Actions</th>
           </tr>
         </thead>
+
         <tbody id="eventsTable" class="divide-y">
-          <!-- Events will load here -->
+          <!-- Loaded dynamically -->
         </tbody>
       </table>
     </div>
 
     <!-- Message -->
     <div id="message" class="mt-4 font-medium text-center"></div>
+
   </main>
 
   <script>
+    const API_BASE =
+      "http://localhost/Event_Ticket_Booking_system/backend/modules/events";
+
     async function loadEvents() {
       try {
-        const res = await fetch(
-          "http://localhost/Event_Ticket_Booking_system/backend/modules/events/read_all.php"
-        );
+        const res = await fetch(`${API_BASE}/read_all.php`);
         const result = await res.json();
 
         if (!result.success) {
@@ -84,6 +87,7 @@
                 </span>
               </td>
               <td class="px-4 py-3 text-center space-x-2">
+
                 <button
                   onclick="approveEvent(${event.event_id})"
                   class="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-md text-xs"
@@ -92,8 +96,8 @@
                 </button>
 
                 <a
-                  href="edit-event.html?id=${event.event_id}"
-                  class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs"
+                  href="edit_event.html?id=${event.event_id}"
+                  class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs inline-block"
                 >
                   Edit
                 </a>
@@ -104,51 +108,55 @@
                 >
                   Delete
                 </button>
+
               </td>
             </tr>
           `;
         });
-      } catch (err) {
-        console.error(err);
+
+      } catch (error) {
+        console.error(error);
         alert("Failed to load events");
       }
     }
 
-    async function approveEvent(id) {
+    async function approveEvent(eventId) {
       if (!confirm("Approve this event?")) return;
 
       const formData = new FormData();
-      formData.append("event_id", id);
+      formData.append("event_id", eventId);
       formData.append("status", "approved");
 
-      const res = await fetch(
-        "http://localhost/Event_Ticket_Booking_system/backend/modules/events/update_status.php",
-        { method: "POST", body: formData }
-      );
+      const res = await fetch(`${API_BASE}/update_status.php`, {
+        method: "POST",
+        body: formData
+      });
 
       const result = await res.json();
-      document.getElementById("message").textContent = result.message;
-      document.getElementById("message").className =
-        "mt-4 text-center font-medium text-green-600";
+
+      const msg = document.getElementById("message");
+      msg.textContent = result.message;
+      msg.className = "mt-4 text-center font-medium text-green-600";
 
       loadEvents();
     }
 
-    async function deleteEvent(id) {
+    async function deleteEvent(eventId) {
       if (!confirm("Delete this event permanently?")) return;
 
       const formData = new FormData();
-      formData.append("event_id", id);
+      formData.append("event_id", eventId);
 
-      const res = await fetch(
-        "http://localhost/Event_Ticket_Booking_system/backend/modules/events/delete.php",
-        { method: "POST", body: formData }
-      );
+      const res = await fetch(`${API_BASE}/delete.php`, {
+        method: "POST",
+        body: formData
+      });
 
       const result = await res.json();
-      document.getElementById("message").textContent = result.message;
-      document.getElementById("message").className =
-        "mt-4 text-center font-medium text-red-600";
+
+      const msg = document.getElementById("message");
+      msg.textContent = result.message;
+      msg.className = "mt-4 text-center font-medium text-red-600";
 
       loadEvents();
     }
