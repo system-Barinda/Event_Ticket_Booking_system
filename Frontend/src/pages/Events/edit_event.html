@@ -3,121 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <title>Edit Event | Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-    }
-
-    input, textarea, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    img {
-      max-width: 100%;
-      margin-top: 10px;
-      border-radius: 4px;
-    }
-
-    button {
-      background: #007bff;
-      color: #fff;
-      border: none;
-      margin-top: 15px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      background: #0056b3;
-    }
-
-    .message {
-      margin-top: 15px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .success { color: green; }
-    .error { color: red; }
-  </style>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
-<div class="container">
-  <h2>Edit Event</h2>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-  <form id="editForm" enctype="multipart/form-data">
+  <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 md:p-8">
 
-    <!-- Hidden Event ID -->
-    <input type="hidden" id="event_id" name="event_id">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+      Edit Event
+    </h2>
 
-    <label>Title *</label>
-    <input type="text" id="title" name="title" required>
+    <form id="editForm" enctype="multipart/form-data" class="space-y-4">
 
-    <label>Category *</label>
-    <input type="text" id="category" name="category" required>
+      <!-- Hidden Event ID -->
+      <input type="hidden" id="event_id" name="event_id">
 
-    <label>City *</label>
-    <input type="text" id="city" name="city" required>
+      <!-- Title -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Title <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
 
-    <label>Language</label>
-    <input type="text" id="language" name="language">
+      <!-- Category -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Category <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="category"
+          name="category"
+          required
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
 
-    <label>Description</label>
-    <textarea id="description" name="description" rows="3"></textarea>
+      <!-- City -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          City <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          required
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
 
-    <label>Accessibility Notes</label>
-    <textarea id="accessibility_notes" name="accessibility_notes" rows="3"></textarea>
+      <!-- Language -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Language
+        </label>
+        <input
+          type="text"
+          id="language"
+          name="language"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+      </div>
 
-    <!-- Admin only -->
-    <label>Status</label>
-    <select id="status" name="status">
-      <option value="pending">Pending</option>
-      <option value="approved">Approved</option>
-      <option value="cancelled">Cancelled</option>
-    </select>
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Description
+        </label>
+        <textarea
+          id="description"
+          name="description"
+          rows="3"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        ></textarea>
+      </div>
 
-    <!-- Image -->
-    <label>Current Image</label>
-    <img id="currentImage" src="" alt="Event Image">
+      <!-- Accessibility Notes -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Accessibility Notes
+        </label>
+        <textarea
+          id="accessibility_notes"
+          name="accessibility_notes"
+          rows="3"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        ></textarea>
+      </div>
 
-    <label>Update Image (optional)</label>
-    <input type="file" name="event_image" accept="image/png, image/jpeg">
+      <!-- Status (Admin) -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Status
+        </label>
+        <select
+          id="status"
+          name="status"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
 
-    <button type="submit">Update Event</button>
-  </form>
+      <!-- Current Image -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Current Image
+        </label>
+        <img
+          id="currentImage"
+          src=""
+          alt="Event Image"
+          class="max-h-48 rounded-lg border"
+        >
+      </div>
 
-  <div id="message" class="message"></div>
-</div>
+      <!-- Update Image -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Update Image (optional)
+        </label>
+        <input
+          type="file"
+          name="event_image"
+          accept="image/png, image/jpeg"
+          class="block w-full text-sm text-gray-600
+                 file:mr-4 file:py-2 file:px-4
+                 file:rounded-lg file:border-0
+                 file:bg-blue-50 file:text-blue-700
+                 hover:file:bg-blue-100"
+        >
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition"
+      >
+        Update Event
+      </button>
+
+    </form>
+
+    <!-- Message -->
+    <div id="message" class="mt-4 text-center font-medium"></div>
+
+  </div>
 
 <script>
   const params = new URLSearchParams(window.location.search);
@@ -130,85 +175,61 @@
 
   document.getElementById("event_id").value = eventId;
 
-  // =========================
-  // LOAD EVENT
-  // =========================
+  // Load event
   async function loadEvent() {
-    try {
-      const res = await fetch(
-        `http://localhost/Event_Ticket_Booking_system/backend/modules/events/read_one.php?id=${eventId}`
-      );
-      const result = await res.json();
+    const res = await fetch(
+      `http://localhost/Event_Ticket_Booking_system/backend/modules/events/read_one.php?id=${eventId}`
+    );
+    const result = await res.json();
 
-      if (!result.success) {
-        alert(result.message || "Failed to load event");
-        return;
-      }
+    if (!result.success) {
+      alert(result.message || "Failed to load event");
+      return;
+    }
 
-      const event = result.data || result.event;
+    const event = result.data || result.event;
 
-      document.getElementById("title").value = event.title;
-      document.getElementById("category").value = event.category;
-      document.getElementById("city").value = event.city;
-      document.getElementById("language").value = event.language || "";
-      document.getElementById("description").value = event.description || "";
-      document.getElementById("accessibility_notes").value =
-        event.accessibility_notes || "";
+    title.value = event.title;
+    category.value = event.category;
+    city.value = event.city;
+    language.value = event.language || "";
+    description.value = event.description || "";
+    accessibility_notes.value = event.accessibility_notes || "";
+    status.value = event.status || "pending";
 
-      if (event.status) {
-        document.getElementById("status").value = event.status;
-      }
-
-      if (event.event_image) {
-        document.getElementById("currentImage").src =
-          `http://localhost/Event_Ticket_Booking_system/${event.event_image}`;
-      } else {
-        document.getElementById("currentImage").style.display = "none";
-      }
-
-    } catch (err) {
-      alert("Error loading event");
-      console.error(err);
+    if (event.event_image) {
+      currentImage.src =
+        `http://localhost/Event_Ticket_Booking_system/${event.event_image}`;
+    } else {
+      currentImage.classList.add("hidden");
     }
   }
 
   loadEvent();
 
-  // =========================
-  // UPDATE EVENT
-  // =========================
-  document.getElementById("editForm").addEventListener("submit", async (e) => {
+  // Update event
+  editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const message = document.getElementById("message");
-    const formData = new FormData(e.target);
+    const formData = new FormData(editForm);
 
-    try {
-      const res = await fetch(
-        "http://localhost/Event_Ticket_Booking_system/backend/modules/events/update.php",
-        {
-          method: "POST",
-          body: formData
-        }
-      );
+    const res = await fetch(
+      "http://localhost/Event_Ticket_Booking_system/backend/modules/events/update.php",
+      { method: "POST", body: formData }
+    );
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (data.success) {
-        message.textContent = data.message;
-        message.className = "message success";
-
-        setTimeout(() => {
-          window.location.href = "admin-events.html";
-        }, 1200);
-      } else {
-        message.textContent = data.message;
-        message.className = "message error";
-      }
-    } catch (err) {
-      message.textContent = "Update failed";
-      message.className = "message error";
-      console.error(err);
+    if (data.success) {
+      message.textContent = data.message;
+      message.className = "mt-4 text-center font-medium text-green-600";
+      setTimeout(() => {
+        window.location.href = "admin-events.html";
+      }, 1200);
+    } else {
+      message.textContent = data.message;
+      message.className = "mt-4 text-center font-medium text-red-600";
     }
   });
 </script>
