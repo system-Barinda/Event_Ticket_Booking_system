@@ -66,7 +66,7 @@ if (!empty($_FILES['event_image']['name'])) {
 }
 
 /* =========================
-   INSERT INTO DATABASE
+   INSERT EVENT
 ========================= */
 $stmt = $conn->prepare(
     "INSERT INTO events 
@@ -88,7 +88,35 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
+
+    /* =========================
+       🔔 ADD NOTIFICATION (NEW)
+    ========================= */
+    $message = "📢 New upcoming event: $title in $city";
+    $type = "event";
+
+    // Notify all users
+    $users = $conn->query("SELECT user_id FROM users");
+
+    $notifStmt = $conn->prepare(
+        "INSERT INTO notifications (user_id, message, type)
+         VALUES (?, ?, ?)"
+    );
+
+    while ($user = $users->fetch_assoc()) {
+        $notifStmt->bind_param(
+            "iss",
+            $user['user_id'],
+            $message,
+            $type
+        );
+        $notifStmt->execute();
+    }
+
+    $notifStmt->close();
+
     echo "Event created successfully (pending approval)";
+
 } else {
     echo "Failed to create event";
 }
