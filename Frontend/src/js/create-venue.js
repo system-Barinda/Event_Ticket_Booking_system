@@ -6,6 +6,12 @@ form.addEventListener("submit", async e => {
 
   const fd = new FormData(form);
 
+  // 🔧 FIX checkbox value
+  fd.set(
+    "wheelchair_access",
+    form.wheelchair_access.checked ? 1 : 0
+  );
+
   const res = await fetch("../backend/venues/create.php", {
     method: "POST",
     body: fd
@@ -17,13 +23,11 @@ form.addEventListener("submit", async e => {
 
   if (data.success) {
     message.textContent = "Venue registered successfully.";
-    message.className =
-      "mt-4 text-sm text-green-600";
+    message.className = "mt-4 text-sm text-green-600";
     form.reset();
   } else {
     message.textContent =
-      data.message || "Failed to register venue.";
-    message.className =
-      "mt-4 text-sm text-red-600";
+      data.error || "Failed to register venue.";
+    message.className = "mt-4 text-sm text-red-600";
   }
 });
