@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin – All Orders</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="p-6 bg-gray-100">
+
+<h1 class="text-3xl font-bold mb-6 text-center">
+  Admin Dashboard – All Orders
+</h1>
+
+<div class="bg-white rounded shadow overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="p-3">Order ID</th>
+        <th class="p-3">User ID</th>
+        <th class="p-3">Session ID</th>
+        <th class="p-3">Total Amount</th>
+        <th class="p-3">Status</th>
+        <th class="p-3">Created At</th>
+        <th class="p-3">Action</th>
+      </tr>
+    </thead>
+
+    <tbody id="ordersTable" class="text-center"></tbody>
+  </table>
+</div>
+
+<script src="js/admin-orders.js"></script>
+</body>
+</html>
