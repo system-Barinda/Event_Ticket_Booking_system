@@ -3,11 +3,15 @@ require_once "../../config/database.php";
 
 header("Content-Type: application/json");
 
+// Show PHP errors for debugging (remove in production)
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Check database connection
 if ($conn->connect_error) {
     echo json_encode([
         "success" => false,
-        "message" => "Database connection failed"
+        "message" => "Database connection failed: " . $conn->connect_error
     ]);
     exit;
 }
@@ -16,7 +20,7 @@ $sql = "
 SELECT 
     event_id,
     title,
-    date,
+    event_date,        -- FIXED COLUMN NAME
     location,
     price,
     available_tickets,
@@ -30,7 +34,7 @@ $result = $conn->query($sql);
 if (!$result) {
     echo json_encode([
         "success" => false,
-        "message" => "Query failed"
+        "message" => "Query failed: " . $conn->error
     ]);
     exit;
 }
