@@ -7,18 +7,28 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      background-color: #f4f6f9;
     }
 
     .event-card {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 15px;
       margin-bottom: 15px;
       border-radius: 8px;
-      background-color: #f9f9f9;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
     .event-card h3 {
       margin-top: 0;
+      color: #333;
+    }
+
+    .event-card img {
+      max-width: 200px;
+      display: block;
+      margin-bottom: 10px;
+      border-radius: 6px;
     }
 
     .error {
@@ -60,7 +70,6 @@
           "http://localhost/Event_Ticket_Booking_system/backend/modules/events/get-all-events.php"
         );
 
-        // If server returns 404 or 500
         if (!response.ok) {
           const errorText = await response.text();
           container.innerHTML = `
@@ -70,18 +79,7 @@
           return;
         }
 
-        const text = await response.text();
-
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch (jsonError) {
-          container.innerHTML = `
-            <p class="error">Invalid JSON Response</p>
-            <div class="debug">${text}</div>
-          `;
-          return;
-        }
+        const data = await response.json();
 
         if (!data.success || !data.events || data.events.length === 0) {
           container.innerHTML = "<p>No events found.</p>";
@@ -95,11 +93,14 @@
           eventCard.className = "event-card";
 
           eventCard.innerHTML = `
+            ${event.event_image ? `<img src="../../uploads/${event.event_image}" alt="Event Image">` : ""}
             <h3>${event.title}</h3>
-            <p><strong>Date:</strong> ${event.date}</p>
-            <p><strong>Location:</strong> ${event.location}</p>
-            <p><strong>Price:</strong> $${event.price}</p>
-            <p><strong>Available Tickets:</strong> ${event.available_tickets}</p>
+            <p><strong>Description:</strong> ${event.description ?? "N/A"}</p>
+            <p><strong>Category:</strong> ${event.category ?? "N/A"}</p>
+            <p><strong>City:</strong> ${event.city ?? "N/A"}</p>
+            <p><strong>Language:</strong> ${event.language ?? "N/A"}</p>
+            <p><strong>Status:</strong> ${event.status}</p>
+            <p><strong>Created At:</strong> ${event.created_at}</p>
           `;
 
           container.appendChild(eventCard);
