@@ -1,0 +1,43 @@
+<h2>My Orders</h2>
+<div id="orders-container"></div>
+
+<script>
+  const userId = localStorage.getItem("user_id");
+
+  async function loadOrders() {
+    try {
+      const res = await fetch(
+        `http://localhost/Event_Ticket_Booking_system/backend/modules/orders/get-user-orders.php?user_id=${userId}`
+      );
+
+      const data = await res.json();
+
+      const container = document.getElementById("orders-container");
+
+      if (!data.success || data.orders.length === 0) {
+        container.innerHTML = "<p>No orders found.</p>";
+        return;
+      }
+
+      container.innerHTML = "";
+
+      data.orders.forEach(order => {
+        container.innerHTML += `
+          <div class="order-card">
+            <h3>${order.title}</h3>
+            <p><strong>Date:</strong> ${order.date}</p>
+            <p><strong>Location:</strong> ${order.location}</p>
+            <p><strong>Quantity:</strong> ${order.quantity}</p>
+            <p><strong>Total:</strong> $${order.total_price}</p>
+          </div>
+          <hr>
+        `;
+      });
+
+    } catch (error) {
+      console.error("Error loading orders:", error);
+    }
+  }
+
+  loadOrders();
+</script>
