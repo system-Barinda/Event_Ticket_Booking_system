@@ -9,217 +9,264 @@
 <body class="bg-gray-100 min-h-screen p-8">
 
   <div class="max-w-7xl mx-auto">
-    
+
     <h2 class="text-3xl font-semibold text-gray-800 mb-6">
       All Events
     </h2>
 
     <!-- Controls -->
-    <div class="flex flex-col md:flex-row gap-4 mb-8">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
 
-      <input 
-        type="text"
-        id="searchInput"
-        placeholder="Search events..."
-        class="w-full md:w-1/3 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
+      <div class="flex flex-col md:flex-row gap-4 w-full">
 
-      <select 
-        id="statusFilter"
-        class="w-full md:w-1/4 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="all">All Status</option>
-        <option value="approved">Approved</option>
-        <option value="pending">Pending</option>
-        <option value="rejected">Rejected</option>
-      </select>
+        <input 
+          type="text"
+          id="searchInput"
+          placeholder="Search events..."
+          class="w-full md:w-1/3 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
 
-      <select 
-        id="sortOrder"
-        class="w-full md:w-1/4 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-      </select>
+        <select 
+          id="statusFilter"
+          class="w-full md:w-1/4 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="all">All Status</option>
+          <option value="approved">Approved</option>
+          <option value="pending">Pending</option>
+          <option value="rejected">Rejected</option>
+        </select>
 
+        <select 
+          id="sortOrder"
+          class="w-full md:w-1/4 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+
+        <select 
+          id="itemsPerPageSelect"
+          class="w-full md:w-1/5 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="6">6 per page</option>
+          <option value="9">9 per page</option>
+          <option value="12">12 per page</option>
+        </select>
+
+      </div>
     </div>
 
+    <!-- Results Info -->
+    <div id="resultsInfo" class="text-sm text-gray-600 mb-4"></div>
+
+    <!-- Events -->
     <div id="orders-container"></div>
 
     <!-- Pagination -->
-    <div id="pagination" class="flex justify-center mt-10"></div>
+    <div id="pagination" class="flex justify-center items-center gap-2 mt-8"></div>
 
   </div>
 
-  <script>
-    let allEvents = [];
-    let filteredEvents = [];
-    let currentPage = 1;
-    const itemsPerPage = 6;
+<script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-      loadEvents();
+let allEvents = [];
+let filteredEvents = [];
+let currentPage = 1;
+let itemsPerPage = 6;
 
-      document.getElementById("searchInput").addEventListener("input", applyFilters);
-      document.getElementById("statusFilter").addEventListener("change", applyFilters);
-      document.getElementById("sortOrder").addEventListener("change", applyFilters);
-    });
+document.addEventListener("DOMContentLoaded", function () {
+  loadEvents();
 
-    async function loadEvents() {
-      const container = document.getElementById("orders-container");
-      container.innerHTML = `<p class="text-blue-500">Loading events...</p>`;
+  document.getElementById("searchInput").addEventListener("input", applyFilters);
+  document.getElementById("statusFilter").addEventListener("change", applyFilters);
+  document.getElementById("sortOrder").addEventListener("change", applyFilters);
+  document.getElementById("itemsPerPageSelect").addEventListener("change", function() {
+    itemsPerPage = parseInt(this.value);
+    currentPage = 1;
+    renderPage();
+  });
+});
 
-      try {
-        const response = await fetch(
-          "http://localhost/Event_Ticket_Booking_system/backend/modules/events/get-all-events.php"
-        );
+async function loadEvents() {
+  const container = document.getElementById("orders-container");
 
-        const data = await response.json();
+  container.innerHTML = `
+    <div class="flex justify-center items-center py-16">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+    </div>
+  `;
 
-        if (!data.success || !data.events) {
-          container.innerHTML = `<p class="text-gray-500">No events available.</p>`;
-          return;
-        }
+  try {
+    const response = await fetch(
+      "http://localhost/Event_Ticket_Booking_system/backend/modules/events/get-all-events.php"
+    );
 
-        allEvents = data.events;
-        applyFilters();
+    const data = await response.json();
 
-      } catch (error) {
-        container.innerHTML = `<p class="text-red-500">Connection Failed</p>`;
-      }
+    if (!data.success || !data.events) {
+      container.innerHTML = `<p class="text-gray-500 text-center">No events available.</p>`;
+      return;
     }
 
-    function applyFilters() {
-      const searchValue = document.getElementById("searchInput").value.toLowerCase();
-      const selectedStatus = document.getElementById("statusFilter").value;
-      const sortOrder = document.getElementById("sortOrder").value;
+    allEvents = data.events;
+    applyFilters();
 
-      filteredEvents = allEvents.filter(event => {
+  } catch (error) {
+    container.innerHTML = `<p class="text-red-500 text-center">Connection Failed</p>`;
+  }
+}
 
-        const matchesSearch =
-          (event.title && event.title.toLowerCase().includes(searchValue)) ||
-          (event.description && event.description.toLowerCase().includes(searchValue)) ||
-          (event.category && event.category.toLowerCase().includes(searchValue)) ||
-          (event.city && event.city.toLowerCase().includes(searchValue)) ||
-          (event.language && event.language.toLowerCase().includes(searchValue));
+function applyFilters() {
 
-        const matchesStatus =
-          selectedStatus === "all" || event.status === selectedStatus;
+  const searchValue = document.getElementById("searchInput").value.toLowerCase();
+  const selectedStatus = document.getElementById("statusFilter").value;
+  const sortOrder = document.getElementById("sortOrder").value;
 
-        return matchesSearch && matchesStatus;
-      });
+  filteredEvents = allEvents.filter(event => {
 
-      filteredEvents.sort((a, b) => {
-        const dateA = new Date(a.created_at);
-        const dateB = new Date(b.created_at);
-        return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
-      });
+    const matchesSearch =
+      (event.title && event.title.toLowerCase().includes(searchValue)) ||
+      (event.description && event.description.toLowerCase().includes(searchValue)) ||
+      (event.category && event.category.toLowerCase().includes(searchValue)) ||
+      (event.city && event.city.toLowerCase().includes(searchValue)) ||
+      (event.language && event.language.toLowerCase().includes(searchValue));
 
-      currentPage = 1;
-      renderPage();
-    }
+    const matchesStatus =
+      selectedStatus === "all" || event.status === selectedStatus;
 
-    function renderPage() {
-      const start = (currentPage - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-      const paginatedItems = filteredEvents.slice(start, end);
+    return matchesSearch && matchesStatus;
+  });
 
-      displayEvents(paginatedItems);
-      renderPagination();
-    }
+  filteredEvents.sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+    return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+  });
 
-    function displayEvents(events) {
-      const container = document.getElementById("orders-container");
+  currentPage = 1;
+  renderPage();
+}
 
-      if (events.length === 0) {
-        container.innerHTML = `<p class="text-gray-500">No matching events found.</p>`;
-        return;
-      }
+function renderPage() {
 
-      container.innerHTML = `<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>`;
-      const grid = container.querySelector("div");
+  const totalItems = filteredEvents.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-      events.forEach(event => {
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = Math.min(start + itemsPerPage, totalItems);
 
-        let badgeColor = "bg-yellow-100 text-yellow-700";
-        if (event.status === "approved") badgeColor = "bg-green-100 text-green-700";
-        if (event.status === "rejected") badgeColor = "bg-red-100 text-red-700";
+  const paginatedItems = filteredEvents.slice(start, end);
 
-        const card = document.createElement("div");
-        card.className = "bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden";
+  updateResultsInfo(start, end, totalItems);
+  displayEvents(paginatedItems);
+  renderPagination(totalPages);
+}
 
-        card.innerHTML = `
-          ${event.event_image ? `
-            <img 
-              src="http://localhost/Event_Ticket_Booking_system/backend/uploads/${event.event_image}" 
-              class="w-full h-48 object-cover"
-              onerror="this.style.display='none'"
-            >
-          ` : ""}
+function updateResultsInfo(start, end, total) {
+  const info = document.getElementById("resultsInfo");
 
-          <div class="p-6 space-y-3">
-            <span class="inline-block px-3 py-1 text-xs font-medium rounded-full ${badgeColor}">
-              ${event.status}
-            </span>
+  if (total === 0) {
+    info.innerHTML = "";
+    return;
+  }
 
-            <h3 class="text-lg font-semibold text-gray-800">
-              ${event.title}
-            </h3>
+  info.innerHTML = `Showing <strong>${start + 1}</strong>–<strong>${end}</strong> of <strong>${total}</strong> results`;
+}
 
-            <p class="text-sm text-gray-500">
-              ${event.description ?? "No description provided."}
-            </p>
+function displayEvents(events) {
 
-            <div class="text-sm text-gray-600 space-y-1">
-              <p><strong>Category:</strong> ${event.category ?? "N/A"}</p>
-              <p><strong>City:</strong> ${event.city ?? "N/A"}</p>
-              <p><strong>Language:</strong> ${event.language ?? "N/A"}</p>
-            </div>
+  const container = document.getElementById("orders-container");
 
-            <p class="text-xs text-gray-400 pt-2 border-t">
-              Created: ${event.created_at}
-            </p>
-          </div>
-        `;
+  if (events.length === 0) {
+    container.innerHTML = `<p class="text-gray-500 text-center py-10">No matching events found.</p>`;
+    return;
+  }
 
-        grid.appendChild(card);
-      });
-    }
+  container.innerHTML = `<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>`;
+  const grid = container.querySelector("div");
 
-    function renderPagination() {
-      const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
-      const pagination = document.getElementById("pagination");
+  events.forEach(event => {
 
-      if (totalPages <= 1) {
-        pagination.innerHTML = "";
-        return;
-      }
+    let badgeColor = "bg-yellow-100 text-yellow-700";
+    if (event.status === "approved") badgeColor = "bg-green-100 text-green-700";
+    if (event.status === "rejected") badgeColor = "bg-red-100 text-red-700";
 
-      let buttons = "";
+    const card = document.createElement("div");
+    card.className = "bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden";
 
-      for (let i = 1; i <= totalPages; i++) {
-        buttons += `
-          <button 
-            onclick="goToPage(${i})"
-            class="mx-1 px-4 py-2 rounded-lg border 
-            ${i === currentPage 
-              ? "bg-blue-600 text-white border-blue-600" 
-              : "bg-white text-gray-700 hover:bg-gray-200"}">
-            ${i}
-          </button>
-        `;
-      }
+    card.innerHTML = `
+      ${event.event_image ? `
+        <img 
+          src="http://localhost/Event_Ticket_Booking_system/backend/uploads/${event.event_image}" 
+          class="w-full h-48 object-cover"
+          onerror="this.style.display='none'"
+        >
+      ` : ""}
 
-      pagination.innerHTML = buttons;
-    }
+      <div class="p-6 space-y-3">
+        <span class="inline-block px-3 py-1 text-xs font-medium rounded-full ${badgeColor}">
+          ${event.status}
+        </span>
 
-    function goToPage(page) {
-      currentPage = page;
-      renderPage();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+        <h3 class="text-lg font-semibold text-gray-800">
+          ${event.title}
+        </h3>
 
-  </script>
+        <p class="text-sm text-gray-500 line-clamp-3">
+          ${event.description ?? "No description provided."}
+        </p>
+
+        <div class="text-sm text-gray-600 space-y-1">
+          <p><strong>Category:</strong> ${event.category ?? "N/A"}</p>
+          <p><strong>City:</strong> ${event.city ?? "N/A"}</p>
+          <p><strong>Language:</strong> ${event.language ?? "N/A"}</p>
+        </div>
+
+        <p class="text-xs text-gray-400 pt-2 border-t">
+          Created: ${event.created_at}
+        </p>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function renderPagination(totalPages) {
+
+  const pagination = document.getElementById("pagination");
+
+  if (totalPages <= 1) {
+    pagination.innerHTML = "";
+    return;
+  }
+
+  pagination.innerHTML = `
+    <button onclick="changePage(-1)" 
+      class="px-4 py-2 rounded-lg border bg-white hover:bg-gray-200"
+      ${currentPage === 1 ? "disabled class='opacity-50 cursor-not-allowed'" : ""}>
+      Previous
+    </button>
+
+    <span class="px-4 text-sm text-gray-600">
+      Page ${currentPage} of ${totalPages}
+    </span>
+
+    <button onclick="changePage(1)" 
+      class="px-4 py-2 rounded-lg border bg-white hover:bg-gray-200"
+      ${currentPage === totalPages ? "disabled class='opacity-50 cursor-not-allowed'" : ""}>
+      Next
+    </button>
+  `;
+}
+
+function changePage(direction) {
+  currentPage += direction;
+  renderPage();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+</script>
 
 </body>
 </html>
