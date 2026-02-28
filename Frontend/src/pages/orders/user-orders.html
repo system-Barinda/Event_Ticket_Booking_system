@@ -14,14 +14,28 @@
       All Events
     </h2>
 
-    <!-- 🔍 Search Bar -->
-    <div class="mb-8">
+    <!-- 🔎 Search + Filter Row -->
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+
+      <!-- Search -->
       <input 
         type="text"
         id="searchInput"
         placeholder="Search events..."
         class="w-full md:w-1/2 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
+
+      <!-- Status Filter -->
+      <select 
+        id="statusFilter"
+        class="w-full md:w-1/4 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="all">All Status</option>
+        <option value="approved">Approved</option>
+        <option value="pending">Pending</option>
+        <option value="rejected">Rejected</option>
+      </select>
+
     </div>
 
     <div id="orders-container">
@@ -36,10 +50,8 @@
     document.addEventListener("DOMContentLoaded", function () {
       loadEvents();
 
-      document.getElementById("searchInput").addEventListener("input", function () {
-        const searchValue = this.value.toLowerCase();
-        filterEvents(searchValue);
-      });
+      document.getElementById("searchInput").addEventListener("input", applyFilters);
+      document.getElementById("statusFilter").addEventListener("change", applyFilters);
     });
 
     async function loadEvents() {
@@ -79,6 +91,28 @@
         `;
         console.error(error);
       }
+    }
+
+    function applyFilters() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const selectedStatus = document.getElementById("statusFilter").value;
+
+      const filtered = allEvents.filter(event => {
+
+        const matchesSearch =
+          (event.title && event.title.toLowerCase().includes(searchValue)) ||
+          (event.description && event.description.toLowerCase().includes(searchValue)) ||
+          (event.category && event.category.toLowerCase().includes(searchValue)) ||
+          (event.city && event.city.toLowerCase().includes(searchValue)) ||
+          (event.language && event.language.toLowerCase().includes(searchValue));
+
+        const matchesStatus =
+          selectedStatus === "all" || event.status === selectedStatus;
+
+        return matchesSearch && matchesStatus;
+      });
+
+      displayEvents(filtered);
     }
 
     function displayEvents(events) {
@@ -151,18 +185,6 @@
 
         grid.appendChild(card);
       });
-    }
-
-    function filterEvents(searchValue) {
-      const filtered = allEvents.filter(event =>
-        (event.title && event.title.toLowerCase().includes(searchValue)) ||
-        (event.description && event.description.toLowerCase().includes(searchValue)) ||
-        (event.category && event.category.toLowerCase().includes(searchValue)) ||
-        (event.city && event.city.toLowerCase().includes(searchValue)) ||
-        (event.language && event.language.toLowerCase().includes(searchValue))
-      );
-
-      displayEvents(filtered);
     }
 
   </script>
