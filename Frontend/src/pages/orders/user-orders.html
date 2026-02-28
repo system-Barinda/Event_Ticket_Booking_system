@@ -14,7 +14,7 @@
       All Events
     </h2>
 
-    <!-- 🔎 Search + Filter Row -->
+    <!-- 🔎 Search + Filter + Sort -->
     <div class="flex flex-col md:flex-row gap-4 mb-8">
 
       <!-- Search -->
@@ -22,7 +22,7 @@
         type="text"
         id="searchInput"
         placeholder="Search events..."
-        class="w-full md:w-1/2 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full md:w-1/3 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
 
       <!-- Status Filter -->
@@ -34,6 +34,15 @@
         <option value="approved">Approved</option>
         <option value="pending">Pending</option>
         <option value="rejected">Rejected</option>
+      </select>
+
+      <!-- Sort -->
+      <select 
+        id="sortOrder"
+        class="w-full md:w-1/4 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
       </select>
 
     </div>
@@ -52,6 +61,7 @@
 
       document.getElementById("searchInput").addEventListener("input", applyFilters);
       document.getElementById("statusFilter").addEventListener("change", applyFilters);
+      document.getElementById("sortOrder").addEventListener("change", applyFilters);
     });
 
     async function loadEvents() {
@@ -81,7 +91,7 @@
         }
 
         allEvents = data.events;
-        displayEvents(allEvents);
+        applyFilters();
 
       } catch (error) {
         container.innerHTML = `
@@ -96,8 +106,9 @@
     function applyFilters() {
       const searchValue = document.getElementById("searchInput").value.toLowerCase();
       const selectedStatus = document.getElementById("statusFilter").value;
+      const sortOrder = document.getElementById("sortOrder").value;
 
-      const filtered = allEvents.filter(event => {
+      let filtered = allEvents.filter(event => {
 
         const matchesSearch =
           (event.title && event.title.toLowerCase().includes(searchValue)) ||
@@ -110,6 +121,18 @@
           selectedStatus === "all" || event.status === selectedStatus;
 
         return matchesSearch && matchesStatus;
+      });
+
+      // 🔥 SORTING LOGIC
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.created_at);
+        const dateB = new Date(b.created_at);
+
+        if (sortOrder === "newest") {
+          return dateB - dateA;
+        } else {
+          return dateA - dateB;
+        }
       });
 
       displayEvents(filtered);
