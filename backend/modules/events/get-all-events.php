@@ -3,7 +3,7 @@ require_once "../../config/database.php";
 
 header("Content-Type: application/json");
 
-// Show PHP errors for debugging (remove in production)
+// Enable error reporting (remove in production)
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -19,11 +19,15 @@ if ($conn->connect_error) {
 $sql = "
 SELECT 
     event_id,
+    organizer_id,
     title,
-    event_date,        -- FIXED COLUMN NAME
-    location,
-    price,
-    available_tickets,
+    description,
+    category,
+    city,
+    language,
+    accessibility_notes,
+    status,
+    event_image,
     created_at
 FROM events
 ORDER BY created_at DESC
