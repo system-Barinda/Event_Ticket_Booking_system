@@ -75,9 +75,10 @@
           card.innerHTML = `
             ${event.event_image ? `
               <img 
-                src="../../uploads/${event.event_image}" 
+                src="http://localhost/Event_Ticket_Booking_system/backend/uploads/${event.event_image}" 
                 alt="Event Image"
                 class="w-full h-48 object-cover"
+                onerror="this.style.display='none'"
               >
             ` : ""}
 
@@ -117,6 +118,7 @@
             Connection Failed
           </p>
         `;
+        console.error(error);
       }
     }
   </script>
